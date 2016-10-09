@@ -20,7 +20,7 @@ public class User {
 		this.play_status = 0;
 		this.total_sec = 86400;
 		date = LocalDate.now();
-		int day = date.getDayOfYear();
+		day = date.getDayOfYear();
 		setTime();
 	}
 	
