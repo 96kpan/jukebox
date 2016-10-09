@@ -47,8 +47,8 @@ public class JukeBox {
 	}
 
 	//get song prior to validation
-	public Song getSong(Song song) {
-		thisSong = song;
+	public Song getSong(int i) {
+		thisSong = songList[i];
 		return thisSong;
 	}
 

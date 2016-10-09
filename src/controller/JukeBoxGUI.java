@@ -110,7 +110,7 @@ public class JukeBoxGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Select song 1")){
-				inputSong = jukeBox.
+				inputSong = jukeBox.getSong(0);
 			}
 			else if(e.getActionCommand().equals("Select song 2")){
 				
