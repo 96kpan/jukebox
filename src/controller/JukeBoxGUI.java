@@ -1,5 +1,5 @@
 /*
- *oct 8 -> 22:46
+ *oct 9 -> 8:14am
  */
 package controller;
 
@@ -27,12 +27,15 @@ public class JukeBoxGUI extends JFrame {
 	public static final int height = 250;
 	private JukeBox jukeBox;
 	private JLabel accountStatus;
-	private String inputUserStr;
-	private String inputPasswordStr;
+	private JTextField accountText;
+	private JPasswordField passwordText;
+	private String inputUserStr = "";
+	private String inputPasswordStr = "";
+	private JLabel password;
 	private Song inputSong;
-	private int songIndex;
+	private int songIndex = -1;
 	private User currentUser;
-	
+
 
 	public static void main(String[] args){
 		JukeBoxGUI jukeboxGUI = new JukeBoxGUI();
@@ -47,11 +50,11 @@ public class JukeBoxGUI extends JFrame {
 
 		this.setLocation(100, 40);
 		this.setTitle("JukeBox");
-		
+
 		//song button panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(2, 1));
-		
+
 		//set button "Select Song 1"
 		JButton selectSongButton1 = new JButton();
 		selectSongButton1.setText("Select song 1");
@@ -63,59 +66,57 @@ public class JukeBoxGUI extends JFrame {
 		selectSongButton2.setText("Select song 2");
 		ButtonListener song2 = new ButtonListener();
 		selectSongButton2.addActionListener(song2);
-		
+
 		buttonPanel.add(selectSongButton1);
 		buttonPanel.add(selectSongButton2);
-		
+
 		this.add(buttonPanel);
-		
+
 		//Account information-- account name, password, signout button
 		//and login button
 		JPanel accountInfoBox = new JPanel();
-		accountInfoBox.setLayout(new GridLayout(3, 2));
+		accountInfoBox.setLayout(new GridLayout(4, 2));
 		accountInfoBox.setBackground(Color.white);
 		JLabel accountName = new JLabel("Account Name");
-		JTextField accountText = new JTextField("", 10);
-		inputUserStr = accountText.getText();
+		accountText = new JTextField("", 10);
 		JLabel password = new JLabel("Password");
-		JPasswordField passwordText = new JPasswordField("", 10);
-		inputPasswordStr = passwordText.getText();
+		passwordText = new JPasswordField("", 10);
 		JButton signOutButton = new JButton();
 		signOutButton.setText("Sign out");
+		ButtonListener signout = new ButtonListener();
+		signOutButton.addActionListener(signout);
 		JButton loginButton = new JButton();
 		loginButton.setText("Login");
-		
+		ButtonListener login = new ButtonListener();
+		loginButton.addActionListener(login);
+
+		accountStatus = new JLabel();
+		accountStatus.setText("");
+
 		accountInfoBox.add(accountName);
 		accountInfoBox.add(accountText);
 		accountInfoBox.add(password);
 		accountInfoBox.add(passwordText);
 		accountInfoBox.add(signOutButton);
 		accountInfoBox.add(loginButton);
-		
+		accountInfoBox.add(accountStatus);
+
 		this.add(accountInfoBox);
-		
+
 		initializeJukeBox();
-		
-		accountStatus = new JLabel();
-		accountStatus.setText(currentUser.labelString());
-		
+
+
+
 	}
 
 	private void initializeJukeBox() {
 		jukeBox = new JukeBox();
-		
+
 		//check if the inputted values are correct
 		//if true, update the values
-		if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
-			currentUser = jukeBox.getUser();
-		}
-		else{
-			JOptionPane.showMessageDialog(null, "Input fields are not correct");
-		}
 		
-
 	}
-	
+
 	private class ButtonListener implements ActionListener {
 
 		@Override
@@ -123,16 +124,53 @@ public class JukeBoxGUI extends JFrame {
 			if(e.getActionCommand().equals("Select song 1")){
 				inputSong = jukeBox.getSong(0);
 				songIndex = 0;
-				accountStatus.setText(currentUser.labelString());
+				currentUser.incStatus();
+				
 			}
 			else if(e.getActionCommand().equals("Select song 2")){
 				inputSong = jukeBox.getSong(1);
 				songIndex = 1;
-				accountStatus.setText(currentUser.labelString());
+				currentUser.incStatus();
 			}
+			else if(e.getActionCommand().equals("Sign out")){
+				resetUser();
+			}
+			//if the use press the login button, we want to validate, sign in and start changing
+			//the toString of accountStatus
+			else if(e.getActionCommand().equals("Login")){
+				//validate the parameters are all entered, else
+				//we display a popup warning message
+				inputPasswordStr = passwordText.getText();
+				inputUserStr = accountText.getText();
 			
+				if(songIndex == -1 || inputUserStr.equals("") || inputPasswordStr.equals("")){
+					// Select song is clicked when no one is logged in
+					JOptionPane.showMessageDialog(null, "Not all input fields are entered");
+				}else{
+					if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
+						currentUser = jukeBox.getUser();
+						accountStatus.setText(currentUser.labelString());
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Incorrect username/password. Try again");
+					}
+					
+				}
+			}
 		}
-		
+
+		private void resetUser() {
+			accountStatus.setText("");;
+			accountText.setText("");
+			passwordText.setText("");
+			inputUserStr = "";
+			inputPasswordStr = "";
+			inputSong = null;
+			songIndex = -1;
+			currentUser = null;
+
+		}
+
 	}
 
 }

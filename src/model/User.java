@@ -1,5 +1,5 @@
 /*
- * oct 8 -> 22:46
+ *oct 9 -> 8:14am
  */
 package model;
 import java.time.LocalDate;
@@ -85,6 +85,6 @@ public class User {
 	}
 	
 	public String labelString(){
-		return "Status " + this.getStatus() + ", " + this.getTime();
+		return "Status: " + this.getStatus() + ", " + this.getTime();
 	}
 }
