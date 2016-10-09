@@ -12,4 +12,16 @@ public class Song {
 		this.fileName = fileName;
 		this.length = length;
 	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public String getArtist() {
+		return artist;
+	}
+	
+	public int length() {
+		return length;
+	}
 }
