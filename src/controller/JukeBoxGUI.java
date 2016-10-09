@@ -8,14 +8,19 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import model.JukeBox;
+import model.User;
 
 public class JukeBoxGUI extends JFrame {
 
 	public static final int width = 350;
-	public static final int height = 350;
+	public static final int height = 250;
+	private JukeBox jukeBox;
+	private String inputUserStr;
+	private String inputPasswordStr;
 
 	public static void main(String[] args){
 		JukeBoxGUI jukeboxGUI = new JukeBoxGUI();
@@ -30,6 +35,8 @@ public class JukeBoxGUI extends JFrame {
 
 		this.setLocation(100, 40);
 		this.setTitle("JukeBox");
+		
+		initializeJukeBox();
 		
 		//song button panel
 		JPanel buttonPanel = new JPanel();
@@ -56,13 +63,17 @@ public class JukeBoxGUI extends JFrame {
 		accountInfoBox.setBackground(Color.white);
 		JLabel accountName = new JLabel("Account Name");
 		JTextField accountText = new JTextField("", 10);
+		inputUserStr = accountText.getText();
 		JLabel password = new JLabel("Password");
-		JTextField passwordText = new JTextField("", 10);
+		JPasswordField passwordText = new JPasswordField("", 10);
+		inputPasswordStr = passwordText.getText();
 		JButton signOutButton = new JButton();
 		signOutButton.setText("Sign out");
 		JButton loginButton = new JButton();
 		loginButton.setText("Login");
 		
+		JLabel accountStatus = new JLabel();
+	
 		accountInfoBox.add(accountName);
 		accountInfoBox.add(accountText);
 		accountInfoBox.add(password);
@@ -71,16 +82,16 @@ public class JukeBoxGUI extends JFrame {
 		accountInfoBox.add(loginButton);
 		
 		this.add(accountInfoBox);
-		
-		initializeJukeBox();
-
-		
-		
-
+	
 	}
 
 	private void initializeJukeBox() {
-		// TODO Auto-generated method stub
+		JukeBox jukebox = new JukeBox();
+		
+		//check if the inputted values are correct
+		jukebox.validate(inputUserStr, inputPasswordStr, song);
+		
+		
 
 	}
 
