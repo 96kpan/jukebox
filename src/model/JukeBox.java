@@ -1,7 +1,8 @@
 /*
- * oct 8 -> 22:04
+ * oct 8 -> 22:46
  */
 package model;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -20,12 +21,12 @@ import songplayer.SongPlayer;
 
 public class JukeBox {
 
-	private Song[] songList;
-	private User[] userList;
+	private ArrayList<Song> songList;
+	private ArrayList<User> userList;
 	private boolean IS_VALIDATED;
 	private User thisUser;
 	private Song thisSong;
-	private Queue<Song> songQueue; 
+	private Queue<Song> songQueue;
 
 	public JukeBox() {
 		initializeJukeBox();
@@ -47,37 +48,57 @@ public class JukeBox {
 	}
 
 	//get song prior to validation
+	//gets the song based on index from the songList
 	public Song getSong(int i) {
-		thisSong = songList[i];
+		thisSong = songList.get(i);
 		return thisSong;
 	}
 
+	public ArrayList getSongList(){
+		return this.songList;
+	}
+	
+	public ArrayList getUserList(){
+		return this.userList;
+	}
+
 	//sets song prior to validation
-	//sets the song based on index from the songList
-	public void setSong(int i) {
-		thisSong = songList[i];
+	public void setSong(Song song) {
+		thisSong = song;
+	}
+	
+	public User getUser(){
+		return this.thisUser;
 	}
 
 	//current user login info -> login screen
 	//will validate user and information to see if user can play the song
-	public void validate(String user, String password, Song song) {
+	public boolean validate(String user, String password, Song song) {
 		if(user.equals("Chris")) 
 			if(password.equals("1")){
-				thisUser = userList[0];
+				thisUser = userList.get(0);
+				validateUser();
+				return true;
 			}
 		if(user.equals("Devon")) 
 			if(password.equals("22")) {
-				thisUser = userList[1];
+				thisUser = userList.get(1);
+				validateUser();
+				return true;
 			}
 		if(user.equals("River")) 
 			if(password.equals("333")){
-				thisUser = userList[2];
+				thisUser = userList.get(2);
+				validateUser();
+				return true;
 			}
 		if(user.equals("Ryan")) 
 			if(password.equals("4444")){
-				thisUser = userList[3];
+				thisUser = userList.get(3);
+				validateUser();
+				return true;
 			}
-		validateUser();
+		return false;
 	}
 
 	//checks if the user can play the song
@@ -93,27 +114,26 @@ public class JukeBox {
 
 	}
 
-	// Sets the songList array to contain all possible songs
-
+	// Sets the songList arraylist to contain all possible songs
 	private void setSongList() {
-		songList = new Song[9];
-		songList[0] = new Song("Kevin MacLeod", "Danse Macabre", "./songfiles/DanseMacabreViolinHook.mp3", 34);
-		songList[1] = new Song("FreePlay Music", "Determined Tumbao", "DeterminedTumbao.mp3", 20);
-		songList[2] = new Song("Sun Microsystems", "Flute", "flute.aif", 5);
-		songList[3] = new Song("Kevin MacLeod", "Loping Sting", "LopingSting.mp3", 4);
-		songList[4] = new Song("Unknown", "Space Music", "spacemusinc.au", 6);
-		songList[5] = new Song("FreePlay Music", "Swing Cheese", "SwingCheese.mp3", 15);
-		songList[6] = new Song("Microsof", "Tada", "tada.wav", 2);
-		songList[7] = new Song("Kevin MacLeod", "The Curtain Rises", "TheCurtainRises.mp3", 28);
-		songList[8] = new Song("Pierre Langer", "Untameable Fire", "UntameableFire.mp3", 282);
+		songList = new ArrayList<Song>();
+		songList.add(new Song("Kevin MacLeod", "Danse Macabre", "./songfiles/DanseMacabreViolinHook.mp3", 34));
+		songList.add(new Song("FreePlay Music", "Determined Tumbao", "DeterminedTumbao.mp3", 20));
+		songList.add(new Song("Sun Microsystems", "Flute", "flute.aif", 5));
+		songList.add(new Song("Kevin MacLeod", "Loping Sting", "LopingSting.mp3", 4));
+		songList.add(new Song("Unknown", "Space Music", "spacemusinc.au", 6));
+		songList.add(new Song("FreePlay Music", "Swing Cheese", "SwingCheese.mp3", 15));
+		songList.add(new Song("Microsof", "Tada", "tada.wav", 2));
+		songList.add(new Song("Kevin MacLeod", "The Curtain Rises", "TheCurtainRises.mp3", 28));
+		songList.add(new Song("Pierre Langer", "Untameable Fire", "UntameableFire.mp3", 282));
 	}
 
 	private void setUserList() {
-		userList = new User[4];
-		userList[0] = new User("Chris", "1");
-		userList[1] = new User("Devon", "22");
-		userList[2] = new User("River", "333");
-		userList[3] = new User("Ryan", "4444");
+		userList = new ArrayList<User>();
+		userList.add(new User("Chris", "1"));
+		userList.add(new User("Devon", "22"));
+		userList.add(new User("River", "333"));
+		userList.add(new User("Ryan", "4444"));
 	}
 
 	// Testing purposes only

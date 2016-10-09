@@ -1,5 +1,5 @@
 /*
- * oct 8 -> 21:54
+ * oct 8 -> 22:46
  */
 package model;
 import java.time.LocalDate;
@@ -82,5 +82,9 @@ public class User {
 	
 	public void negateTime(int seconds) {
 		total_sec -= seconds;
+	}
+	
+	public String labelString(){
+		return "Status " + this.getStatus() + ", " + this.getTime();
 	}
 }

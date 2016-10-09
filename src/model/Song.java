@@ -1,5 +1,5 @@
 /*
- * oct 8 -> 21:54
+ * oct 8 -> 22:46
  */
 package model;
 
@@ -40,6 +40,10 @@ public class Song {
 			play_status = 0;
 			day = temp;
 		}
+	}
+	
+	public int getPlayStatus(){
+		return this.play_status;
 	}
 	
 	public void incStatus() {

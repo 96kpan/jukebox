@@ -1,5 +1,5 @@
 /*
- *oct 8 -> 21: 56 
+ *oct 8 -> 22:46
  */
 package controller;
 
@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -25,9 +26,13 @@ public class JukeBoxGUI extends JFrame {
 	public static final int width = 350;
 	public static final int height = 250;
 	private JukeBox jukeBox;
+	private JLabel accountStatus;
 	private String inputUserStr;
 	private String inputPasswordStr;
 	private Song inputSong;
+	private int songIndex;
+	private User currentUser;
+	
 
 	public static void main(String[] args){
 		JukeBoxGUI jukeboxGUI = new JukeBoxGUI();
@@ -42,8 +47,6 @@ public class JukeBoxGUI extends JFrame {
 
 		this.setLocation(100, 40);
 		this.setTitle("JukeBox");
-		
-		initializeJukeBox();
 		
 		//song button panel
 		JPanel buttonPanel = new JPanel();
@@ -82,8 +85,6 @@ public class JukeBoxGUI extends JFrame {
 		JButton loginButton = new JButton();
 		loginButton.setText("Login");
 		
-		JLabel accountStatus = new JLabel();
-	
 		accountInfoBox.add(accountName);
 		accountInfoBox.add(accountText);
 		accountInfoBox.add(password);
@@ -92,15 +93,25 @@ public class JukeBoxGUI extends JFrame {
 		accountInfoBox.add(loginButton);
 		
 		this.add(accountInfoBox);
-	
+		
+		initializeJukeBox();
+		
+		accountStatus = new JLabel();
+		accountStatus.setText(currentUser.labelString());
+		
 	}
 
 	private void initializeJukeBox() {
-		JukeBox jukebox = new JukeBox();
+		jukeBox = new JukeBox();
 		
 		//check if the inputted values are correct
-		//jukebox.validate(inputUserStr, inputPasswordStr, song);
-		
+		//if true, update the values
+		if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
+			currentUser = jukeBox.getUser();
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Input fields are not correct");
+		}
 		
 
 	}
@@ -111,9 +122,13 @@ public class JukeBoxGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Select song 1")){
 				inputSong = jukeBox.getSong(0);
+				songIndex = 0;
+				accountStatus.setText(currentUser.labelString());
 			}
 			else if(e.getActionCommand().equals("Select song 2")){
-				
+				inputSong = jukeBox.getSong(1);
+				songIndex = 1;
+				accountStatus.setText(currentUser.labelString());
 			}
 			
 		}
