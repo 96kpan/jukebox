@@ -1,5 +1,5 @@
 /*
- * oct 8 -> 21:54
+ * oct 8 -> 22:02
  */
 package model;
 import java.util.LinkedList;
@@ -38,17 +38,23 @@ public class JukeBox {
 		setUserList();
 		IS_VALIDATED = false;
 	}
-	
+
 	public void playSong(Song song) {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
 		SongPlayer.playFile(waitForSongEnd, song.getFileName());
-		
+
 		// working on rest
 	}
 
 	//sets song prior to validation
 	public void setSong(Song song) {
 		thisSong = song;
+	}
+
+	//sets song prior to validation
+	//sets the song based on index from the songList
+	public void setSong(int i) {
+		thisSong = songList[i];
 	}
 
 	//current user login info -> login screen
@@ -115,7 +121,7 @@ public class JukeBox {
 		System.out.println(Niven.getTime());
 
 	}
-	
+
 	/**
 	 * This inner class allows us to have an callback function that receive a
 	 * songFinishedPlaying message whenever an audio file has been played.
