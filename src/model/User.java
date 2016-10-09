@@ -1,4 +1,5 @@
 package model;
+import java.time.LocalDate;
 
 public class User {
 	private String acc_name;
@@ -9,6 +10,8 @@ public class User {
 	private int min;
 	private int sec;
 	private int total_sec;
+	private int day;
+	private LocalDate date;
 	private String time;
 	
 	public User(String name, String pw) {
@@ -16,6 +19,8 @@ public class User {
 		this.password = pw;
 		this.play_status = 0;
 		this.total_sec = 86400;
+		date = LocalDate.now();
+		int day = date.getDayOfYear();
 		setTime();
 	}
 	
@@ -43,12 +48,37 @@ public class User {
 	}
 	
 	public boolean canPlay() {
+		resetDay();
 		if(play_status < 4)
 			return true;
 		return false;
+	}
+
+	private void resetDay() {
+		date = LocalDate.now();
+		int temp = date.getDayOfYear();
+		if(day == temp)
+			return;
+		else {
+			play_status = 0;
+			day = temp;
+		}
+	}
+	
+	public int getSeconds(){
+		return total_sec;
+	}
+
+	public int getDay() {
+		return day;
 	}
 	
 	public String getTime() {
 		return time;
 	}
+	
+	public void negateTime(int seconds) {
+		total_sec -= seconds;
+	}
 }
+
