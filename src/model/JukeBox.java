@@ -1,4 +1,6 @@
 package model;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class JukeBox {
 
@@ -7,54 +9,58 @@ public class JukeBox {
 	private boolean IS_VALIDATED;
 	private User thisUser;
 	private Song thisSong;
+	private Queue<Song> songQueue; 
 
 	public JukeBox() {
 		initializeJukeBox();
-		test();
+		//	test();
 	}
 
 	private void initializeJukeBox() {
+		songQueue = new LinkedList<Song>();
 		setSongList();
 		setUserList();
 		IS_VALIDATED = false;
+	}
 
-
+	//sets song prior to validation
+	public void setSong(Song song) {
+		thisSong = song;
 	}
 
 	//current user login info -> login screen
+	//will validate user and information to see if user can play the song
 	public void validate(String user, String password, Song song) {
 		if(user.equals("Chris")) 
 			if(password.equals("1")){
 				thisUser = userList[0];
-				validateUser(song);
 			}
 		if(user.equals("Devon")) 
 			if(password.equals("22")) {
 				thisUser = userList[1];
-				validateUser(song);
 			}
 		if(user.equals("River")) 
 			if(password.equals("333")){
 				thisUser = userList[2];
-				validateUser(song);
 			}
 		if(user.equals("Ryan")) 
 			if(password.equals("4444")){
 				thisUser = userList[3];
-				validateUser(song);
 			}
+		validateUser();
 	}
 
-	//checks if 
-	private void validateUser(Song chosenSong) {
-		if(thisUser.canPlay() && thisUser.getSeconds() >= chosenSong.getLength()){
-			thisUser.negateTime(chosenSong.getLength());
+	//checks if the user can play the song
+	private void validateUser() {
+		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength()){
+			thisUser.negateTime(thisSong.getLength());
 			IS_VALIDATED = true;
+			songQueue.add(thisSong);
 			return;
 		}
-		
+
 		this.IS_VALIDATED = false;
-		
+
 	}
 
 	// Sets the songList array to contain all possible songs
@@ -87,3 +93,5 @@ public class JukeBox {
 
 	}
 }
+
+
