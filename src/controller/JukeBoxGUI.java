@@ -1,8 +1,13 @@
+/*
+ *oct 8 -> 21: 56 
+ */
 package controller;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import model.JukeBox;
+import model.Song;
 import model.User;
 
 public class JukeBoxGUI extends JFrame {
@@ -21,6 +27,7 @@ public class JukeBoxGUI extends JFrame {
 	private JukeBox jukeBox;
 	private String inputUserStr;
 	private String inputPasswordStr;
+	private Song inputSong;
 
 	public static void main(String[] args){
 		JukeBoxGUI jukeboxGUI = new JukeBoxGUI();
@@ -45,11 +52,14 @@ public class JukeBoxGUI extends JFrame {
 		//set button "Select Song 1"
 		JButton selectSongButton1 = new JButton();
 		selectSongButton1.setText("Select song 1");
-
+		ButtonListener song1 = new ButtonListener();
+		selectSongButton1.addActionListener(song1);
 
 		//set button "Select Song 2"
 		JButton selectSongButton2 = new JButton();
 		selectSongButton2.setText("Select song 2");
+		ButtonListener song2 = new ButtonListener();
+		selectSongButton2.addActionListener(song2);
 		
 		buttonPanel.add(selectSongButton1);
 		buttonPanel.add(selectSongButton2);
@@ -89,10 +99,25 @@ public class JukeBoxGUI extends JFrame {
 		JukeBox jukebox = new JukeBox();
 		
 		//check if the inputted values are correct
-		jukebox.validate(inputUserStr, inputPasswordStr, song);
+		//jukebox.validate(inputUserStr, inputPasswordStr, song);
 		
 		
 
+	}
+	
+	private class ButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getActionCommand().equals("Select song 1")){
+				inputSong = jukeBox.
+			}
+			else if(e.getActionCommand().equals("Select song 2")){
+				
+			}
+			
+		}
+		
 	}
 
 }
