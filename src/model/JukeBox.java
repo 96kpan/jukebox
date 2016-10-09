@@ -1,5 +1,5 @@
 /*
- * oct 8 -> 22:02
+ * oct 8 -> 22:04
  */
 package model;
 import java.util.LinkedList;
@@ -46,9 +46,10 @@ public class JukeBox {
 		// working on rest
 	}
 
-	//sets song prior to validation
-	public void setSong(Song song) {
+	//get song prior to validation
+	public Song getSong(Song song) {
 		thisSong = song;
+		return thisSong;
 	}
 
 	//sets song prior to validation
