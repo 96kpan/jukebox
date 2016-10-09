@@ -49,7 +49,7 @@ public class User {
 	
 	public boolean canPlay() {
 		resetDay();
-		if(play_status < 4)
+		if(play_status < 3)
 			return true;
 		return false;
 	}
