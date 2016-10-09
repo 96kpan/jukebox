@@ -1,5 +1,5 @@
 /*
- * oct 8 -> 21:25
+ * oct 8 -> 21:54
  */
 package model;
 
@@ -25,13 +25,13 @@ public class Song {
 	}
 	
 	public boolean canPlay() {
-		resetDay();
+		checkDay();
 		if(play_status < 3)
 			return true;
 		return false;
 	}
 	
-	private void resetDay() {
+	private void checkDay() {
 		date = LocalDate.now();
 		int temp = date.getDayOfYear();
 		if(day == temp)

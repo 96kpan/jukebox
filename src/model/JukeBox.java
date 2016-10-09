@@ -1,5 +1,5 @@
 /*
- * oct 8 -> 21:25
+ * oct 8 -> 21:54
  */
 package model;
 import java.util.LinkedList;
@@ -43,7 +43,7 @@ public class JukeBox {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
 		SongPlayer.playFile(waitForSongEnd, song.getFileName());
 		
-		
+		// working on rest
 	}
 
 	//sets song prior to validation
