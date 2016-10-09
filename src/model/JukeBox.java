@@ -1,9 +1,22 @@
 /*
- * oct 8 -> 7:54 pm
+ * oct 8 -> 21:25
  */
 package model;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import songplayer.EndOfSongEvent;
+import songplayer.EndOfSongListener;
+/**
+ * Play one audio file from the songfiles directory.
+ * There is no listener for the end of song event.
+ * 
+ * @author Rick Mercer
+ */
+import songplayer.SongPlayer;
+import songplayer.EndOfSongEvent;
+import songplayer.EndOfSongListener;
+import songplayer.SongPlayer;
 
 public class JukeBox {
 
@@ -24,6 +37,13 @@ public class JukeBox {
 		setSongList();
 		setUserList();
 		IS_VALIDATED = false;
+	}
+	
+	public void playSong(Song song) {
+		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
+		SongPlayer.playFile(waitForSongEnd, song.getFileName());
+		
+		
 	}
 
 	//sets song prior to validation
@@ -55,7 +75,7 @@ public class JukeBox {
 
 	//checks if the user can play the song
 	private void validateUser() {
-		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength()){
+		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay()){
 			thisUser.negateTime(thisSong.getLength());
 			IS_VALIDATED = true;
 			songQueue.add(thisSong);
@@ -94,6 +114,18 @@ public class JukeBox {
 		User Niven = new User("Niven", "1");
 		System.out.println(Niven.getTime());
 
+	}
+	
+	/**
+	 * This inner class allows us to have an callback function that receive a
+	 * songFinishedPlaying message whenever an audio file has been played.
+	 */
+	private class WaitingForSongToEnd implements EndOfSongListener {
+
+		public void songFinishedPlaying(EndOfSongEvent eosEvent) {
+			System.out.println("\nFinished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
+					+ eosEvent.finishedTime());
+		}
 	}
 }
 

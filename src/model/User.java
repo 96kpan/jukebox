@@ -1,3 +1,6 @@
+/*
+ * oct 8 -> 21:25
+ */
 package model;
 import java.time.LocalDate;
 
@@ -81,4 +84,3 @@ public class User {
 		total_sec -= seconds;
 	}
 }
-

@@ -1,16 +1,49 @@
+/*
+ * oct 8 -> 21:25
+ */
 package model;
 
+import java.time.LocalDate;
+
 public class Song {
-	String title;
-	String fileName;
-	String artist;
-	int length; // seconds
+	private String title;
+	private String fileName;
+	private String artist;
+	private int length; // seconds
+	private int play_status;
+	private int day;
+	private LocalDate date;
 	
 	public Song(String artist, String title, String fileName, int length) {
 		this.artist = artist;
 		this.title = title;
 		this.fileName = fileName;
 		this.length = length;
+		this.play_status = 0;
+		date = LocalDate.now();
+		day = date.getDayOfYear();
+	}
+	
+	public boolean canPlay() {
+		resetDay();
+		if(play_status < 3)
+			return true;
+		return false;
+	}
+	
+	private void resetDay() {
+		date = LocalDate.now();
+		int temp = date.getDayOfYear();
+		if(day == temp)
+			return;
+		else {
+			play_status = 0;
+			day = temp;
+		}
+	}
+	
+	public void incStatus() {
+		this.play_status++;
 	}
 	
 	public String getTitle() {
@@ -23,5 +56,9 @@ public class Song {
 	
 	public int getLength() {
 		return length;
+	}
+	
+	public String getFileName() {
+		return fileName;
 	}
 }
