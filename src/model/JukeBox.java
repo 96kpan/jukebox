@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11:57pm
+ *oct 10 -> 11:54
  */
 package model;
 import java.util.ArrayList;
@@ -15,18 +15,15 @@ import songplayer.EndOfSongListener;
  * @author Rick Mercer
  */
 import songplayer.SongPlayer;
-import songplayer.EndOfSongEvent;
-import songplayer.EndOfSongListener;
-import songplayer.SongPlayer;
 
 public class JukeBox {
 
 	private ArrayList<Song> songList;
 	private ArrayList<User> userList;
-	private boolean IS_VALIDATED;
 	private User thisUser;
 	private Song thisSong;
 	private Queue<Song> songQueue;
+	private boolean currentPlaying;
 
 	
 	// Creates the new JukeBox
@@ -38,34 +35,35 @@ public class JukeBox {
 	// Initializes a new songQueue and creates the song list and user list
 	private void initializeJukeBox() {
 		songQueue = new LinkedList<Song>();
+		System.out.println(songQueue.toString());
 		setSongList();
 		setUserList();
-		IS_VALIDATED = false;
+		currentPlaying = false;
 	}
 
 	// Plays the song passed through the parameter and increments status of thisUser and thisSong
 	public void playSong(Song song) {
-		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
-		SongPlayer.playFile(waitForSongEnd, song.getFileName());
+		songQueue.add(song);
+		System.out.println(song.getTitle() + " added to queue");
 		thisUser.incStatus();
 		thisSong.incStatus();
+		thisUser.negateTime(song);
+		playQueue();
 	}
-
+	
+	private void playQueue() {
+		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
+		if(!currentPlaying) {
+			SongPlayer.playFile(waitForSongEnd, songQueue.peek().getFileName());
+			currentPlaying = true;
+		}
+	}
+	
 	// Get song prior to validation
 	// Gets the song based on index from the songList
 	public Song getSong(int i) {
 		thisSong = songList.get(i);
 		return thisSong;
-	}
-
-	// Returns songList array
-	public ArrayList getSongList(){
-		return this.songList;
-	}
-	
-	// Returns userList array
-	public ArrayList getUserList(){
-		return this.userList;
 	}
 
 	// Sets song prior to validation
@@ -107,13 +105,9 @@ public class JukeBox {
 	// Checks if the user can play the song
 	private boolean validateUser() {
 		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay()){
-			thisUser.negateTime(thisSong.getLength());
-			IS_VALIDATED = true;
-			songQueue.add(thisSong);
 			return true;
 		}
 
-		this.IS_VALIDATED = false;
 		return false;
 
 	}
@@ -125,7 +119,7 @@ public class JukeBox {
 		songList.add(new Song("FreePlay Music", "Determined Tumbao", "./songfiles/DeterminedTumbao.mp3", 20));
 		songList.add(new Song("Sun Microsystems", "Flute", "./songfiles/flute.aif", 5));
 		songList.add(new Song("Kevin MacLeod", "Loping Sting", "./songfiles/LopingSting.mp3", 4));
-		songList.add(new Song("Unknown", "Space Music", "./songfiles/spacemusinc.au", 6));
+		songList.add(new Song("Unknown", "Space Music", "./songfiles/spacemusic.au", 6));
 		songList.add(new Song("FreePlay Music", "Swing Cheese", "./songfiles/SwingCheese.mp3", 15));
 		songList.add(new Song("Microsoft", "Tada", "./songfiles/tada.wav", 2));
 		songList.add(new Song("Kevin MacLeod", "The Curtain Rises", "./songfiles/TheCurtainRises.mp3", 28));
@@ -141,13 +135,6 @@ public class JukeBox {
 		userList.add(new User("Ryan", "4444"));
 	}
 
-	// Testing purposes only
-	private void test() {
-		User Niven = new User("Niven", "1");
-		System.out.println(Niven.getTime());
-
-	}
-
 	/**
 	 * This inner class allows us to have an callback function that receive a
 	 * songFinishedPlaying message whenever an audio file has been played.
@@ -155,7 +142,19 @@ public class JukeBox {
 	private class WaitingForSongToEnd implements EndOfSongListener {
 
 		public void songFinishedPlaying(EndOfSongEvent eosEvent) {
+			System.out.println("Finished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
+					+ eosEvent.finishedTime());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			currentPlaying = false;
 			songQueue.remove();
+			if(!songQueue.isEmpty()) {
+				playQueue();
+			}
 		}
 	}
 }

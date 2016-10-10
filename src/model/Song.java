@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11:57pm
+ *oct 10 -> 11:54
  */
 package model;
 
@@ -12,6 +12,7 @@ public class Song {
 	private int length; // seconds
 	private int play_status;
 	private int day;
+	private int year;
 	private LocalDate date;
 	
 	public Song(String artist, String title, String fileName, int length) {
@@ -22,6 +23,7 @@ public class Song {
 		this.play_status = 0;
 		date = LocalDate.now();
 		day = date.getDayOfYear();
+		year = date.getYear();
 	}
 	
 	public boolean canPlay() {
@@ -34,7 +36,8 @@ public class Song {
 	private void checkDay() {
 		date = LocalDate.now();
 		int temp = date.getDayOfYear();
-		if(day == temp)
+		int temp2 = date.getYear();
+		if(day == temp && temp2 == year)
 			return;
 		else {
 			play_status = 0;

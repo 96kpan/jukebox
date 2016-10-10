@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11:57pm
+ *oct 10 -> 11:54
  */
 package model;
 import java.time.LocalDate;
@@ -14,6 +14,7 @@ public class User {
 	private int sec;
 	private int total_sec;
 	private int day;
+	private int year;
 	private LocalDate date;
 	private String time;
 	
@@ -21,9 +22,10 @@ public class User {
 		this.acc_name = name;
 		this.password = pw;
 		this.play_status = 0;
-		this.total_sec = 86400;
+		this.total_sec = 90000;
 		date = LocalDate.now();
 		day = date.getDayOfYear();
+		year = date.getYear();
 		setTime();
 	}
 	
@@ -60,7 +62,8 @@ public class User {
 	private void checkDay() {
 		date = LocalDate.now();
 		int temp = date.getDayOfYear();
-		if(day == temp)
+		int temp2 = date.getYear();
+		if(day == temp && temp2 == year)
 			return;
 		else {
 			play_status = 0;
@@ -80,10 +83,6 @@ public class User {
 		return time;
 	}
 	
-	public void negateTime(int seconds) {
-		total_sec -= seconds;
-	}
-	
 	public void negateTime(Song s) {
 		int songSeconds = s.getLength();
 		total_sec -= songSeconds;
@@ -91,6 +90,6 @@ public class User {
 	}
 	
 	public String labelString(){
-		return "Status: " + this.getStatus() + ", " + this.getTime();
+		return "Status: " + this.getStatus() + " played, " + this.getTime();
 	}
 }

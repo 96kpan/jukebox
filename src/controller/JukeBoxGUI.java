@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11:57pm
+ *oct 10 -> 11:54
  */
 package controller;
 
@@ -23,6 +23,10 @@ import model.User;
 
 public class JukeBoxGUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int width = 350;
 	public static final int height = 250;
 	private JukeBox jukeBox;
@@ -31,9 +35,7 @@ public class JukeBoxGUI extends JFrame {
 	private JPasswordField passwordText;
 	private String inputUserStr = "";
 	private String inputPasswordStr = "";
-	private JLabel password;
 	private Song inputSong;
-	private int songIndex = -1;
 	private User currentUser;
 
 
@@ -50,7 +52,7 @@ public class JukeBoxGUI extends JFrame {
 
 		this.setLocation(100, 40);
 		this.setTitle("JukeBox");
-
+		
 		//song button panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(2, 1));
@@ -91,7 +93,7 @@ public class JukeBoxGUI extends JFrame {
 		loginButton.addActionListener(login);
 
 		accountStatus = new JLabel();
-		accountStatus.setText("");
+		accountStatus.setText("Status: Login first");
 
 		accountInfoBox.add(accountName);
 		accountInfoBox.add(accountText);
@@ -116,13 +118,12 @@ public class JukeBoxGUI extends JFrame {
 
 	private class ButtonListener implements ActionListener {
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Select song 1")){
-				inputSong = jukeBox.getSong(3);
+				inputSong = jukeBox.getSong(4);
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
-					currentUser = jukeBox.getUser();
-					currentUser.negateTime(inputSong);
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
 				}
@@ -134,8 +135,6 @@ public class JukeBoxGUI extends JFrame {
 			else if(e.getActionCommand().equals("Select song 2")){
 				inputSong = jukeBox.getSong(6);
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
-					currentUser = jukeBox.getUser();
-					currentUser.negateTime(inputSong);
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
 				}
@@ -153,12 +152,12 @@ public class JukeBoxGUI extends JFrame {
 				//we display a popup warning message
 				inputPasswordStr = passwordText.getText();
 				inputUserStr = accountText.getText();
-			
-				if(inputUserStr.equals("") || inputPasswordStr.equals("")){
+				inputSong = jukeBox.getSong(0);
+				if(!jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					// Select song is clicked when no one is logged in
-					JOptionPane.showMessageDialog(null, "Not all input fields are entered");
+				//	JOptionPane.showMessageDialog(null, "Not all input fields are entered");
+					resetUser();
 				}else{
-					inputSong = jukeBox.getSong(0);
 					if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 						currentUser = jukeBox.getUser();
 						accountStatus.setText(currentUser.labelString());
@@ -169,17 +168,15 @@ public class JukeBoxGUI extends JFrame {
 		}
 
 		private void resetUser() {
-			accountStatus.setText("");;
+			accountStatus.setText("Status: Login first");;
 			accountText.setText("");
 			passwordText.setText("");
 			inputUserStr = "";
 			inputPasswordStr = "";
 			inputSong = null;
-			songIndex = -1;
 			currentUser = null;
 
 		}
 
 	}
-
 }
