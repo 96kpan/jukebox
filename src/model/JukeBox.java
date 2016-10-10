@@ -1,6 +1,20 @@
-/*
- *oct 10 -> 11:54
+/*	Jukebox Iteration 1: The Model
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: & Cody Macdonald
+ *	Due: 10/14/16
+ *	
+ *	Last Edited: 10/10 @ 12:09
+ *
+ *	JukeBox.java-------------------------------
+ *	|
+ *	|	Contains all the logic for handling
+ *	|	songs, users, the queue, and validating
+ *	|	if a song/user can play
+ *	|
+ *
  */
+
 package model;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -8,12 +22,6 @@ import java.util.Queue;
 
 import songplayer.EndOfSongEvent;
 import songplayer.EndOfSongListener;
-/**
- * Play one audio file from the songfiles directory.
- * There is no listener for the end of song event.
- * 
- * @author Rick Mercer
- */
 import songplayer.SongPlayer;
 
 public class JukeBox {
@@ -29,7 +37,6 @@ public class JukeBox {
 	// Creates the new JukeBox
 	public JukeBox() {
 		initializeJukeBox();
-		//	test();
 	}
 
 	// Initializes a new songQueue and creates the song list and user list
@@ -51,6 +58,7 @@ public class JukeBox {
 		playQueue();
 	}
 	
+	// Plays the start of the song queue
 	private void playQueue() {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
 		if(!currentPlaying) {
@@ -65,11 +73,6 @@ public class JukeBox {
 		thisSong = songList.get(i);
 		return thisSong;
 	}
-
-	// Sets song prior to validation
-	public void setSong(Song song) {
-		thisSong = song;
-	}
 	
 	// Returns current user
 	public User getUser(){
@@ -79,37 +82,16 @@ public class JukeBox {
 	// Current user login info -> login screen
 	// Will validate user and information to see if user can play the song
 	public boolean validate(String user, String password, Song song) {
-		if(user.equals("Chris")) 
-			if(password.equals("1")){
-				thisUser = userList.get(0);
-				return validateUser();
+		for(int x = 0; x < userList.size(); x++) {
+			if(user.equals(userList.get(x).getName())) {
+				if(password.equals(userList.get(x).getPassword())) {
+					thisUser = userList.get(x);
+					if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay())
+						return true;
+				}
 			}
-		if(user.equals("Devon")) 
-			if(password.equals("22")) {
-				thisUser = userList.get(1);
-				return validateUser();
-			}
-		if(user.equals("River")) 
-			if(password.equals("333")){
-				thisUser = userList.get(2);
-				return validateUser();
-			}
-		if(user.equals("Ryan")) 
-			if(password.equals("4444")){
-				thisUser = userList.get(3);
-				return validateUser();
-			}
-		return false;
-	}
-
-	// Checks if the user can play the song
-	private boolean validateUser() {
-		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay()){
-			return true;
 		}
-
 		return false;
-
 	}
 
 	// Sets the songList array to contain all possible songs
@@ -141,6 +123,7 @@ public class JukeBox {
 	 */
 	private class WaitingForSongToEnd implements EndOfSongListener {
 
+		// Prints a message, waits 1 second, and plays the next song if possible once song finishes playing
 		public void songFinishedPlaying(EndOfSongEvent eosEvent) {
 			System.out.println("Finished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
 					+ eosEvent.finishedTime());
@@ -158,5 +141,3 @@ public class JukeBox {
 		}
 	}
 }
-
-

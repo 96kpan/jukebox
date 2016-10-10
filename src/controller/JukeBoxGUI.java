@@ -1,6 +1,20 @@
-/*
- *oct 10 -> 11:54
+/*	Jukebox Iteration 1: The Model
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: & Cody Macdonald
+ *	Due: 10/14/16
+ *	
+ *	Last Edited: 10/10 @ 12:09
+ *
+ *	JukeBoxGUI.java-------------------------------
+ *	|
+ *	|	Creates the GUI for JukeBox. Users can
+ *	|	login and play/add songs to the queue
+ *	|	here.
+ *	|
+ *
  */
+
 package controller;
 
 import java.awt.Color;
@@ -39,11 +53,13 @@ public class JukeBoxGUI extends JFrame {
 	private User currentUser;
 
 
+	// Creates a new instance of the GUI
 	public static void main(String[] args){
 		JukeBoxGUI jukeboxGUI = new JukeBoxGUI();
 		jukeboxGUI.setVisible(true);
 	}
 
+	// Creates the GUI for the Jukebox, including the frame and buttons
 	public JukeBoxGUI(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
@@ -107,7 +123,8 @@ public class JukeBoxGUI extends JFrame {
 
 		initializeJukeBox();
 	}
-
+	
+	// Creates a new instance of the JukeBox
 	private void initializeJukeBox() {
 		jukeBox = new JukeBox();
 
@@ -167,6 +184,7 @@ public class JukeBoxGUI extends JFrame {
 			}
 		}
 
+		// Resets the user text boxes and string displays
 		private void resetUser() {
 			accountStatus.setText("Status: Login first");;
 			accountText.setText("");

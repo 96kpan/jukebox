@@ -1,6 +1,21 @@
-/*
- *oct 10 -> 11:54
+/*	Jukebox Iteration 1: The Model
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: & Cody Macdonald
+ *	Due: 10/14/16
+ *	
+ *	Last Edited: 10/10 @ 12:09
+ *
+ *	Song.java-------------------------------
+ *	|
+ *	|	Song object contains all necessary
+ *	|	fields for a song. Contains getters
+ *	|	and setters as well as checks to see
+ *	|	if it's a new calendar day.
+ *	|
+ *
  */
+
 package model;
 
 import java.time.LocalDate;
@@ -15,6 +30,7 @@ public class Song {
 	private int year;
 	private LocalDate date;
 	
+	// Creates the song object using the values passed through the parameters
 	public Song(String artist, String title, String fileName, int length) {
 		this.artist = artist;
 		this.title = title;
@@ -26,6 +42,8 @@ public class Song {
 		year = date.getYear();
 	}
 	
+	// Checks to see if the song can be played
+	// If the play_status < 3 or if it's a new calendar day
 	public boolean canPlay() {
 		checkDay();
 		if(play_status < 3)
@@ -33,6 +51,7 @@ public class Song {
 		return false;
 	}
 	
+	// Checks to see if it's a new calendar day. If it is, it resets play_status to 0
 	private void checkDay() {
 		date = LocalDate.now();
 		int temp = date.getDayOfYear();
@@ -45,26 +64,27 @@ public class Song {
 		}
 	}
 	
-	public int getPlayStatus(){
-		return this.play_status;
-	}
-	
+	// Incrememnts the play_status by 1
 	public void incStatus() {
 		this.play_status++;
 	}
 	
+	// Returns the title of the song
 	public String getTitle() {
 		return title;
 	}
 	
+	// Returns the artist of the song
 	public String getArtist() {
 		return artist;
 	}
 	
+	// Returns the length of the song
 	public int getLength() {
 		return length;
 	}
 	
+	// Returns the filename of the song
 	public String getFileName() {
 		return fileName;
 	}
