@@ -28,11 +28,14 @@ public class JukeBox {
 	private Song thisSong;
 	private Queue<Song> songQueue;
 
+	
+	// Creates the new JukeBox
 	public JukeBox() {
 		initializeJukeBox();
 		//	test();
 	}
 
+	// Initializes a new songQueue and creates the song list and user list
 	private void initializeJukeBox() {
 		songQueue = new LinkedList<Song>();
 		setSongList();
@@ -40,6 +43,7 @@ public class JukeBox {
 		IS_VALIDATED = false;
 	}
 
+	// Plays the song passed through the parameter and increments status of thisUser and thisSong
 	public void playSong(Song song) {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
 		SongPlayer.playFile(waitForSongEnd, song.getFileName());
@@ -47,32 +51,35 @@ public class JukeBox {
 		thisSong.incStatus();
 	}
 
-	//get song prior to validation
-	//gets the song based on index from the songList
+	// Get song prior to validation
+	// Gets the song based on index from the songList
 	public Song getSong(int i) {
 		thisSong = songList.get(i);
 		return thisSong;
 	}
 
+	// Returns songList array
 	public ArrayList getSongList(){
 		return this.songList;
 	}
 	
+	// Returns userList array
 	public ArrayList getUserList(){
 		return this.userList;
 	}
 
-	//sets song prior to validation
+	// Sets song prior to validation
 	public void setSong(Song song) {
 		thisSong = song;
 	}
 	
+	// Returns current user
 	public User getUser(){
 		return this.thisUser;
 	}
 
-	//current user login info -> login screen
-	//will validate user and information to see if user can play the song
+	// Current user login info -> login screen
+	// Will validate user and information to see if user can play the song
 	public boolean validate(String user, String password, Song song) {
 		if(user.equals("Chris")) 
 			if(password.equals("1")){
@@ -101,7 +108,7 @@ public class JukeBox {
 		return false;
 	}
 
-	//checks if the user can play the song
+	// Checks if the user can play the song
 	private void validateUser() {
 		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay()){
 			thisUser.negateTime(thisSong.getLength());
@@ -114,7 +121,7 @@ public class JukeBox {
 
 	}
 
-	// Sets the songList arraylist to contain all possible songs
+	// Sets the songList array to contain all possible songs
 	private void setSongList() {
 		songList = new ArrayList<Song>();
 		songList.add(new Song("Kevin MacLeod", "Danse Macabre", "./songfiles/DanseMacabreViolinHook.mp3", 34));
@@ -128,6 +135,7 @@ public class JukeBox {
 		songList.add(new Song("Pierre Langer", "Untameable Fire", "UntameableFire.mp3", 282));
 	}
 
+	// Sets the userList array to contain all possible users
 	private void setUserList() {
 		userList = new ArrayList<User>();
 		userList.add(new User("Chris", "1"));
