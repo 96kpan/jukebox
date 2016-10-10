@@ -1,7 +1,7 @@
 /*	Jukebox Iteration 1: The Model
  *	Authors: Katie Pan & Niven Francis
  *
- *	Section Leaders: & Cody Macdonald
+ *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
  *	Last Edited: 10/10 @ 12:09
