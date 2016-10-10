@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11pm
+ *oct 9 -> 11:57pm
  */
 package model;
 import java.time.LocalDate;
@@ -82,6 +82,12 @@ public class User {
 	
 	public void negateTime(int seconds) {
 		total_sec -= seconds;
+	}
+	
+	public void negateTime(Song s) {
+		int songSeconds = s.getLength();
+		total_sec -= songSeconds;
+		setTime();
 	}
 	
 	public String labelString(){

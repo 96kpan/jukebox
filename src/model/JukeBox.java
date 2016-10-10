@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11pm
+ *oct 9 -> 11:57pm
  */
 package model;
 import java.util.ArrayList;
@@ -84,40 +84,37 @@ public class JukeBox {
 		if(user.equals("Chris")) 
 			if(password.equals("1")){
 				thisUser = userList.get(0);
-				validateUser();
-				return true;
+				return validateUser();
 			}
 		if(user.equals("Devon")) 
 			if(password.equals("22")) {
 				thisUser = userList.get(1);
-				validateUser();
-				return true;
+				return validateUser();
 			}
 		if(user.equals("River")) 
 			if(password.equals("333")){
 				thisUser = userList.get(2);
-				validateUser();
-				return true;
+				return validateUser();
 			}
 		if(user.equals("Ryan")) 
 			if(password.equals("4444")){
 				thisUser = userList.get(3);
-				validateUser();
-				return true;
+				return validateUser();
 			}
 		return false;
 	}
 
 	// Checks if the user can play the song
-	private void validateUser() {
+	private boolean validateUser() {
 		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay()){
 			thisUser.negateTime(thisSong.getLength());
 			IS_VALIDATED = true;
 			songQueue.add(thisSong);
-			return;
+			return true;
 		}
 
 		this.IS_VALIDATED = false;
+		return false;
 
 	}
 

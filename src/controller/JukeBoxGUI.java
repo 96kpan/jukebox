@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11:27pm
+ *oct 9 -> 11:57pm
  */
 package controller;
 
@@ -122,11 +122,12 @@ public class JukeBoxGUI extends JFrame {
 				inputSong = jukeBox.getSong(3);
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					currentUser = jukeBox.getUser();
+					currentUser.negateTime(inputSong);
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Incorrect username/password. Try again");
+					JOptionPane.showMessageDialog(null, "Cannot play song 1");
 				}
 				
 			}
@@ -134,11 +135,12 @@ public class JukeBoxGUI extends JFrame {
 				inputSong = jukeBox.getSong(6);
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					currentUser = jukeBox.getUser();
+					currentUser.negateTime(inputSong);
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Incorrect username/password. Try again");
+					JOptionPane.showMessageDialog(null, "Cannot play song 2");
 				}
 			}
 			else if(e.getActionCommand().equals("Sign out")){
