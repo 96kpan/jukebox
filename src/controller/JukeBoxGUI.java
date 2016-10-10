@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 11pm
+ *oct 9 -> 11:27pm
  */
 package controller;
 
@@ -104,9 +104,6 @@ public class JukeBoxGUI extends JFrame {
 		this.add(accountInfoBox);
 
 		initializeJukeBox();
-
-
-
 	}
 
 	private void initializeJukeBox() {
@@ -123,12 +120,26 @@ public class JukeBoxGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Select song 1")){
 				inputSong = jukeBox.getSong(3);
-				songIndex = 0;
+				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
+					currentUser = jukeBox.getUser();
+					jukeBox.playSong(inputSong);
+					accountStatus.setText(currentUser.labelString());
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Incorrect username/password. Try again");
+				}
 				
 			}
 			else if(e.getActionCommand().equals("Select song 2")){
 				inputSong = jukeBox.getSong(6);
-				songIndex = 1;
+				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
+					currentUser = jukeBox.getUser();
+					jukeBox.playSong(inputSong);
+					accountStatus.setText(currentUser.labelString());
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Incorrect username/password. Try again");
+				}
 			}
 			else if(e.getActionCommand().equals("Sign out")){
 				resetUser();
@@ -141,17 +152,14 @@ public class JukeBoxGUI extends JFrame {
 				inputPasswordStr = passwordText.getText();
 				inputUserStr = accountText.getText();
 			
-				if(songIndex == -1 || inputUserStr.equals("") || inputPasswordStr.equals("")){
+				if(inputUserStr.equals("") || inputPasswordStr.equals("")){
 					// Select song is clicked when no one is logged in
 					JOptionPane.showMessageDialog(null, "Not all input fields are entered");
 				}else{
+					inputSong = jukeBox.getSong(0);
 					if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 						currentUser = jukeBox.getUser();
-						jukeBox.playSong(inputSong);
 						accountStatus.setText(currentUser.labelString());
-					}
-					else{
-						JOptionPane.showMessageDialog(null, "Incorrect username/password. Try again");
 					}
 					
 				}
