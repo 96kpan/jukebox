@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 8:14am
+ *oct 9 -> 18:23
  */
 package model;
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class JukeBox {
 	public void playSong(Song song) {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
 		SongPlayer.playFile(waitForSongEnd, song.getFileName());
-
-		// working on rest
+		thisUser.incStatus();
+		thisSong.incStatus();
 	}
 
 	//get song prior to validation
@@ -150,8 +150,7 @@ public class JukeBox {
 	private class WaitingForSongToEnd implements EndOfSongListener {
 
 		public void songFinishedPlaying(EndOfSongEvent eosEvent) {
-			System.out.println("\nFinished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
-					+ eosEvent.finishedTime());
+			songQueue.remove();
 		}
 	}
 }
