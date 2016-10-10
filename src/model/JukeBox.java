@@ -1,5 +1,5 @@
 /*
- *oct 9 -> 18:23
+ *oct 9 -> 11pm
  */
 package model;
 import java.util.ArrayList;
@@ -125,14 +125,14 @@ public class JukeBox {
 	private void setSongList() {
 		songList = new ArrayList<Song>();
 		songList.add(new Song("Kevin MacLeod", "Danse Macabre", "./songfiles/DanseMacabreViolinHook.mp3", 34));
-		songList.add(new Song("FreePlay Music", "Determined Tumbao", "DeterminedTumbao.mp3", 20));
-		songList.add(new Song("Sun Microsystems", "Flute", "flute.aif", 5));
-		songList.add(new Song("Kevin MacLeod", "Loping Sting", "LopingSting.mp3", 4));
-		songList.add(new Song("Unknown", "Space Music", "spacemusinc.au", 6));
-		songList.add(new Song("FreePlay Music", "Swing Cheese", "SwingCheese.mp3", 15));
-		songList.add(new Song("Microsof", "Tada", "tada.wav", 2));
-		songList.add(new Song("Kevin MacLeod", "The Curtain Rises", "TheCurtainRises.mp3", 28));
-		songList.add(new Song("Pierre Langer", "Untameable Fire", "UntameableFire.mp3", 282));
+		songList.add(new Song("FreePlay Music", "Determined Tumbao", "./songfiles/DeterminedTumbao.mp3", 20));
+		songList.add(new Song("Sun Microsystems", "Flute", "./songfiles/flute.aif", 5));
+		songList.add(new Song("Kevin MacLeod", "Loping Sting", "./songfiles/LopingSting.mp3", 4));
+		songList.add(new Song("Unknown", "Space Music", "./songfiles/spacemusinc.au", 6));
+		songList.add(new Song("FreePlay Music", "Swing Cheese", "./songfiles/SwingCheese.mp3", 15));
+		songList.add(new Song("Microsoft", "Tada", "./songfiles/tada.wav", 2));
+		songList.add(new Song("Kevin MacLeod", "The Curtain Rises", "./songfiles/TheCurtainRises.mp3", 28));
+		songList.add(new Song("Pierre Langer", "Untameable Fire", "./songfiles/UntameableFire.mp3", 282));
 	}
 
 	// Sets the userList array to contain all possible users
