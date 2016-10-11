@@ -41,7 +41,7 @@ public class JukeBoxGUI extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final int width = 350;
+	public static final int width = 375;
 	public static final int height = 250;
 	private JukeBox jukeBox;
 	private JLabel accountStatus;
@@ -68,7 +68,7 @@ public class JukeBoxGUI extends JFrame {
 
 		this.setLocation(100, 40);
 		this.setTitle("JukeBox");
-		
+
 		//song button panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(2, 1));
@@ -123,14 +123,14 @@ public class JukeBoxGUI extends JFrame {
 
 		initializeJukeBox();
 	}
-	
+
 	// Creates a new instance of the JukeBox
 	private void initializeJukeBox() {
 		jukeBox = new JukeBox();
 
 		//check if the inputted values are correct
 		//if true, update the values
-		
+
 	}
 
 	private class ButtonListener implements ActionListener {
@@ -147,7 +147,7 @@ public class JukeBoxGUI extends JFrame {
 				else{
 					JOptionPane.showMessageDialog(null, "Cannot play song 1");
 				}
-				
+
 			}
 			else if(e.getActionCommand().equals("Select song 2")){
 				inputSong = jukeBox.getSong(6);
@@ -170,16 +170,17 @@ public class JukeBoxGUI extends JFrame {
 				inputPasswordStr = passwordText.getText();
 				inputUserStr = accountText.getText();
 				inputSong = jukeBox.getSong(0);
-				if(!jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
+				if(!jukeBox.validate(inputUserStr, inputPasswordStr)){
 					// Select song is clicked when no one is logged in
-				//	JOptionPane.showMessageDialog(null, "Not all input fields are entered");
+					JOptionPane.showMessageDialog(null, "Username/passwords are wrong");
 					resetUser();
 				}else{
-					if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
-						currentUser = jukeBox.getUser();
-						accountStatus.setText(currentUser.labelString());
+					if(jukeBox.validate(inputUserStr, inputPasswordStr)){
+						if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
+							currentUser = jukeBox.getUser();
+							accountStatus.setText(currentUser.labelString());
+						}
 					}
-					
 				}
 			}
 		}

@@ -33,7 +33,7 @@ public class JukeBox {
 	private Queue<Song> songQueue;
 	private boolean currentPlaying;
 
-	
+
 	// Creates the new JukeBox
 	public JukeBox() {
 		initializeJukeBox();
@@ -57,7 +57,7 @@ public class JukeBox {
 		thisUser.negateTime(song);
 		playQueue();
 	}
-	
+
 	// Plays the start of the song queue
 	private void playQueue() {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
@@ -66,14 +66,14 @@ public class JukeBox {
 			currentPlaying = true;
 		}
 	}
-	
+
 	// Get song prior to validation
 	// Gets the song based on index from the songList
 	public Song getSong(int i) {
 		thisSong = songList.get(i);
 		return thisSong;
 	}
-	
+
 	// Returns current user
 	public User getUser(){
 		return this.thisUser;
@@ -81,16 +81,25 @@ public class JukeBox {
 
 	// Current user login info -> login screen
 	// Will validate user and information to see if user can play the song
-	public boolean validate(String user, String password, Song song) {
+	public boolean validate(String user, String password) {
 		for(int x = 0; x < userList.size(); x++) {
 			if(user.equals(userList.get(x).getName())) {
 				if(password.equals(userList.get(x).getPassword())) {
 					thisUser = userList.get(x);
-					if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay())
-						return true;
+					return true;
 				}
 			}
 		}
+		return false;
+	}
+
+	// Current user login info -> login screen
+	// Will validate user and information to see if user can play the song
+	public boolean validate(String user, String password, Song song) {
+
+		if(thisUser.canPlay() && thisUser.getSeconds() >= thisSong.getLength() && thisSong.canPlay())
+			return true;
+
 		return false;
 	}
 
