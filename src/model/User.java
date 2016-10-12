@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/10 @ 12:09
+ *	Last Edited: 10/12 @ 10:30AM
  *
  *	User.java-------------------------------
  *	|

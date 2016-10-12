@@ -1,10 +1,10 @@
 /*	Jukebox Iteration 1: The Model
  *	Authors: Katie Pan & Niven Francis
  *
- *	Section Leaders: & Cody Macdonald
+ *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/10 @ 12:09
+ *	Last Edited: 10/12 @ 10:30AM
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -150,7 +150,7 @@ public class JukeBoxGUI extends JFrame {
 
 			}
 			else if(e.getActionCommand().equals("Select song 2")){
-				inputSong = jukeBox.getSong(6);
+				inputSong = jukeBox.getSong(8);
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
