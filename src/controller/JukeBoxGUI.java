@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/12 @ 10:30AM
+ *	Last Edited: 10/12 @ 10:39AM
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -176,10 +176,9 @@ public class JukeBoxGUI extends JFrame {
 					resetUser();
 				}else{
 					if(jukeBox.validate(inputUserStr, inputPasswordStr)){
-						if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
-							currentUser = jukeBox.getUser();
-							accountStatus.setText(currentUser.labelString());
-						}
+						currentUser = jukeBox.getUser();
+						accountStatus.setText(currentUser.labelString());
+						
 					}
 				}
 			}
