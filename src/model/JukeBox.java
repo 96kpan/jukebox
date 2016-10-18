@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/12 @ 10:30AM
+ *	Last Edited: 10/18 @ 16:46
  *
  *	JukeBox.java-------------------------------
  *	|
@@ -42,7 +42,7 @@ public class JukeBox {
 	// Initializes a new songQueue and creates the song list and user list
 	private void initializeJukeBox() {
 		songQueue = new LinkedList<Song>();
-		System.out.println(songQueue.toString());
+		//System.out.println(songQueue.toString());
 		setSongList();
 		setUserList();
 		currentPlaying = false;
@@ -51,7 +51,8 @@ public class JukeBox {
 	// Plays the song passed through the parameter and increments status of thisUser and thisSong
 	public void playSong(Song song) {
 		songQueue.add(song);
-		System.out.println(song.getTitle() + " added to queue");
+		//System.out.println(song.getTitle() + " added to queue");
+		System.out.println(toString());
 		thisUser.incStatus();
 		thisSong.incStatus();
 		thisUser.negateTime(song);
@@ -124,6 +125,14 @@ public class JukeBox {
 		userList.add(new User("Devon", "22"));
 		userList.add(new User("River", "333"));
 		userList.add(new User("Ryan", "4444"));
+	}
+	
+	public String toString() {
+		String result = "";
+		for(Song tempSong : songQueue) {
+			result = result + tempSong.getTime() + " " + tempSong.getTitle() + " by " + tempSong.getArtist() + "\n";
+		}
+		return result;
 	}
 
 	/**

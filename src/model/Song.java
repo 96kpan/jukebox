@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/12 @ 10:30AM
+ *	Last Edited: 10/18 @ 16:46
  *
  *	Song.java-------------------------------
  *	|
@@ -29,7 +29,7 @@ public class Song {
 	private int day;
 	private int year;
 	private LocalDate date;
-	
+
 	// Creates the song object using the values passed through the parameters
 	public Song(String artist, String title, String fileName, int length) {
 		this.artist = artist;
@@ -41,51 +41,58 @@ public class Song {
 		day = date.getDayOfYear();
 		year = date.getYear();
 	}
-	
+
 	// Checks to see if the song can be played
 	// If the play_status < 3 or if it's a new calendar day
 	public boolean canPlay() {
 		checkDay();
-		if(play_status < 3)
+		if (play_status < 3)
 			return true;
 		return false;
 	}
-	
-	// Checks to see if it's a new calendar day. If it is, it resets play_status to 0
+
+	// Checks to see if it's a new calendar day. If it is, it resets play_status
+	// to 0
 	private void checkDay() {
 		date = LocalDate.now();
 		int temp = date.getDayOfYear();
 		int temp2 = date.getYear();
-		if(day == temp && temp2 == year)
+		if (day == temp && temp2 == year)
 			return;
 		else {
 			play_status = 0;
 			day = temp;
 		}
 	}
-	
+
 	// Incrememnts the play_status by 1
 	public void incStatus() {
 		this.play_status++;
 	}
-	
+
 	// Returns the title of the song
 	public String getTitle() {
 		return title;
 	}
-	
+
 	// Returns the artist of the song
 	public String getArtist() {
 		return artist;
 	}
-	
+
 	// Returns the length of the song
 	public int getLength() {
 		return length;
 	}
-	
+
 	// Returns the filename of the song
 	public String getFileName() {
 		return fileName;
+	}
+
+	public String getTime() {
+		int min = (length % 3600) / 60;
+		int sec = length % 60;
+		return String.format("%01d:%02d", min, sec);
 	}
 }
