@@ -17,6 +17,7 @@
 
 package controller;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -106,10 +107,11 @@ public class JukeBoxGUI extends JFrame {
 		JPanel accountInfoBox = new JPanel();
 		accountInfoBox.setLayout(new GridLayout(4, 2));
 		accountInfoBox.setBackground(Color.white);
-		JLabel accountName = new JLabel("Account Name");
-		accountText = new JTextField("", 10);
-		JLabel password = new JLabel("Password");
-		passwordText = new JPasswordField("", 10);
+		accountInfoBox.setSize(400, 900);
+		JLabel accountName = new JLabel("    Account Name");
+		accountText = new JTextField("", 20);
+		JLabel password = new JLabel("    Password");
+		passwordText = new JPasswordField("", 20);
 		JButton signOutButton = new JButton();
 		signOutButton.setText("Sign out");
 		ButtonListener signout = new ButtonListener();
@@ -133,14 +135,25 @@ public class JukeBoxGUI extends JFrame {
 		initializeJukeBox();
 		
 		playlistQueue = new JPanel();
+		JLabel queueLabel = new JLabel("Play List (Song at top is playing)");
 		playlistQueue.setBackground(Color.white);
+		playlistQueue.setSize(400, 900);
+		playlistQueue.add(queueLabel);
+		
 		playlistLabel = new JLabel();
 		playlistLabel.setText(jukeBox.toString());
+		
 		playlistQueue.add(playlistLabel);
 		
+		JPanel leftSide = new JPanel();
+		leftSide.setLayout(new GridLayout(3, 1, 20, 20));
+		leftSide.setSize(900, 900);
+		leftSide.add(queueLabel);
+		leftSide.add(playlistQueue);
+		leftSide.add(accountInfoBox);
+		//BorderLayout.LINE_START
 		
-		this.add(playlistQueue);
-		this.add(accountInfoBox);
+		this.add(leftSide);
 		
 	}
 	
