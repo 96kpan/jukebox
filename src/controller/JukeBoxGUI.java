@@ -19,6 +19,7 @@ package controller;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -34,10 +35,20 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import model.JukeBox;
+import model.PlayList;
 import model.Song;
+import model.SongLibrary;
 import model.User;
 
 public class JukeBoxGUI extends JFrame {
@@ -59,6 +70,8 @@ public class JukeBoxGUI extends JFrame {
 	private JPanel playlistQueue;
 	private JLabel playlistLabel;
 	private static JukeBoxGUI instance;
+	private TableModel model;
+	private JTable table;
 
 
 	// Creates a new instance of the GUI
@@ -167,12 +180,19 @@ public class JukeBoxGUI extends JFrame {
 		
 		//RIGHT SIDE OF THE GUI
 		//This side will include the songs with options of sorting
-		JList allSongs = new JList();
-		
-		
+		JPanel rightSide = new JPanel();
+		this.model = new PlayList(jukeBox.getSongList());
+		this.table = new JTable(this.model);
+		TableModelListener t = new TableModelListener();
+		JScrollPane scrollPane = new JScrollPane(this.table);
+		RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(this.model);
+		this.table.setRowSorter(rowSorter);
+	    // Add panel to frame
+	    rightSide.add(scrollPane, BorderLayout.CENTER);
+
 		this.add(leftSide);
 		this.add(arrowButton);
-		this.add(allSongs);
+		this.add(rightSide);
 		
 	}
 	
@@ -250,6 +270,7 @@ public class JukeBoxGUI extends JFrame {
 			//action listener for the button command
 			//the button should allow the user to add a song into the queue
 			else if(e.getActionCommand().equals("<-")){
+				model.getValueAt(rowIndex, columnIndex)
 				System.out.println("Here in the <- button");
 			}
 		}

@@ -37,8 +37,22 @@ public class PlayList implements TableModel{
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		if(columnIndex == 0){ 
+			//first column = artist
+			return String.class;
+		}
+		else if(columnIndex == 1){ 
+			//second column = title
+			return String.class;
+		}
+		else if(columnIndex == 2){ 
+			//third column = length
+			return Integer.class;
+		}
+		else{
+			//invalid input
+			return null;
+		}
 	}
 
 	@Override

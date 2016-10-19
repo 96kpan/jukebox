@@ -79,6 +79,10 @@ public class JukeBox{
 			currentPlaying = true;
 		}
 	}
+	
+	public Queue<Song> getQueue(){
+		return this.songQueue;
+	}
 
 	// Get song prior to validation
 	// Gets the song based on index from the songList
