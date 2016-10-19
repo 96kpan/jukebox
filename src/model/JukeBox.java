@@ -20,12 +20,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+
 import controller.JukeBoxGUI;
 import songplayer.EndOfSongEvent;
 import songplayer.EndOfSongListener;
 import songplayer.SongPlayer;
 
-public class JukeBox {
+public class JukeBox{
 
 	private ArrayList<Song> songList;
 	private ArrayList<User> userList;
@@ -125,7 +128,11 @@ public class JukeBox {
 		songList.add(new Song("Kevin MacLeod", "The Curtain Rises", "./songfiles/TheCurtainRises.mp3", 28));
 		songList.add(new Song("Pierre Langer", "Untameable Fire", "./songfiles/UntameableFire.mp3", 282));
 	}
-
+	
+	public ArrayList<Song> getSongList(){
+		return songList;
+	}
+ 
 	// Sets the userList array to contain all possible users
 	private void setUserList() {
 		userList = new ArrayList<User>();
@@ -136,15 +143,18 @@ public class JukeBox {
 	}
 	
 	public String toString() {
-		String result = "<html>";
+		StringBuilder result = new StringBuilder();
+		result.append("<html>");
 		
-		System.out.println(songQueue.size());
-		for(Song tempSong : songQueue) {
-			result = result + tempSong.getTime() + " " + tempSong.getTitle() + " by " + tempSong.getArtist() + "<br>";
+		Queue<Song> temp = new LinkedList<Song>();
+		temp.addAll(songQueue);
+		for(Song s : temp){
+			result.append(s.getTime() + " " + s.getTitle() + " by " + s.getArtist() + "<br>");
 		}
-		result += "</html>";
-		//System.out.println(result);
-		return result;
+
+		result.append("</html>");
+		System.out.println(result.toString());
+		return result.toString();
 	}
 
 	/**
@@ -159,17 +169,22 @@ public class JukeBox {
 			//		+ eosEvent.finishedTime());
 			//System.out.println(JukeBox.getInstance().toString());
 			try {
+				System.out.println("here");
 				Thread.sleep(1000);
+				currentPlaying = false;
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			currentPlaying = false;
-			songQueue.remove();
-		
+			
 			gui = JukeBoxGUI.getInstance();
+			songQueue.remove();
 			gui.update();
+			
+			
+
 			if(!songQueue.isEmpty()) {
+				System.out.println("here4");
 				playQueue();
 			}
 			

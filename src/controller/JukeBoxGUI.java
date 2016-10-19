@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -66,9 +67,10 @@ public class JukeBoxGUI extends JFrame {
 	}
 	
 	public void update() {
-	//	System.out.println(jukeBox.toString());
-	//	System.out.println();
-		playlistLabel.setText(jukeBox.toString());
+		System.out.println("jukeBox.toString() " +jukeBox.toString());
+		playlistLabel = new JLabel();
+		playlistLabel.setText("WIT");
+		//playlistLabel.setText(jukeBox.toString());
 	}
 
 	// Creates the GUI for the Jukebox, including the frame and buttons
@@ -107,11 +109,10 @@ public class JukeBoxGUI extends JFrame {
 		JPanel accountInfoBox = new JPanel();
 		accountInfoBox.setLayout(new GridLayout(4, 2));
 		accountInfoBox.setBackground(Color.white);
-		accountInfoBox.setSize(400, 900);
 		JLabel accountName = new JLabel("    Account Name");
-		accountText = new JTextField("", 20);
+		accountText = new JTextField("", 15);
 		JLabel password = new JLabel("    Password");
-		passwordText = new JPasswordField("", 20);
+		passwordText = new JPasswordField("", 15);
 		JButton signOutButton = new JButton();
 		signOutButton.setText("Sign out");
 		ButtonListener signout = new ButtonListener();
@@ -134,26 +135,39 @@ public class JukeBoxGUI extends JFrame {
 		
 		initializeJukeBox();
 		
+		//adds the playlist queue onto the left side
+		//of the gui
 		playlistQueue = new JPanel();
 		JLabel queueLabel = new JLabel("Play List (Song at top is playing)");
 		playlistQueue.setBackground(Color.white);
-		playlistQueue.setSize(400, 900);
 		playlistQueue.add(queueLabel);
-		
 		playlistLabel = new JLabel();
 		playlistLabel.setText(jukeBox.toString());
-		
 		playlistQueue.add(playlistLabel);
 		
+		//this jpanel includes the label of the playlist,
+		//the playlist queue, and the account info box
 		JPanel leftSide = new JPanel();
 		leftSide.setLayout(new GridLayout(3, 1, 20, 20));
-		leftSide.setSize(900, 900);
 		leftSide.add(queueLabel);
 		leftSide.add(playlistQueue);
 		leftSide.add(accountInfoBox);
-		//BorderLayout.LINE_START
+		
+		//the arrowbutton JButton that will allow the user to 
+		//add a song of their choice into the jukebox queue
+		JButton arrowButton = new JButton();
+		arrowButton.setText("<-");
+		ButtonListener b = new ButtonListener();
+		arrowButton.addActionListener(b);
+		
+		//RIGHT SIDE OF THE GUI
+		//This side will include the songs with options of sorting
+		JList allSongs = new JList();
+		
 		
 		this.add(leftSide);
+		this.add(arrowButton);
+		this.add(allSongs);
 		
 	}
 	
@@ -169,6 +183,10 @@ public class JukeBoxGUI extends JFrame {
 		//check if the inputted values are correct
 		//if true, update the values
 
+	}
+	
+	public JukeBox getJukeBox(){
+		return jukeBox;
 	}
 	
 	private class ButtonListener implements ActionListener {
@@ -221,6 +239,12 @@ public class JukeBoxGUI extends JFrame {
 						
 					}
 				}
+			}
+			
+			//action listener for the button command
+			//the button should allow the user to add a song into the queue
+			else if(e.getActionCommand().equals("<-")){
+				System.out.println("Here in the <- button");
 			}
 		}
 
