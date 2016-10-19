@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/18 @ 16:46
+ *	Last Edited: 10/19 8:15
  *
  *	JukeBox.java-------------------------------
  *	|
@@ -37,17 +37,18 @@ public class JukeBox{
 	private Queue<Song> songQueue;
 	private boolean currentPlaying;
 	private JukeBoxGUI gui;
+	private static JukeBox instance = new JukeBox();
+	private String playList;
 
 	// Creates the new JukeBox
 	private JukeBox() {
 		initializeJukeBox();
 	}
 	
-	public static JukeBox getInstance(){
-		return new JukeBox();
+	public static JukeBox getInstance() {
+		return instance;
 	}
 	
-
 	// Initializes a new songQueue and creates the song list and user list
 	private void initializeJukeBox() {
 		
@@ -153,7 +154,8 @@ public class JukeBox{
 		}
 
 		result.append("</html>");
-		System.out.println(result.toString());
+		//System.out.println(result.toString());
+		playList = result.toString();
 		return result.toString();
 	}
 
@@ -169,22 +171,22 @@ public class JukeBox{
 			//		+ eosEvent.finishedTime());
 			//System.out.println(JukeBox.getInstance().toString());
 			try {
-				System.out.println("here");
+				//System.out.println("here");
 				Thread.sleep(1000);
 				currentPlaying = false;
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			gui = JukeBoxGUI.getInstance();
 			songQueue.remove();
-			gui.update();
 			
-			
-
+			JukeBox object = JukeBox.getInstance();
+			JukeBoxGUI gui = JukeBoxGUI.getInstance();
+			gui.update(object.toString());
+			//System.out.println(object.toString());
+			//gui.update();
 			if(!songQueue.isEmpty()) {
-				System.out.println("here4");
+				//System.out.println("here4");
 				playQueue();
 			}
 			

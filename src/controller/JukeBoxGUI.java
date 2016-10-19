@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/18 4:48pm
+ *	Last Edited: 10/19 8:15
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -58,19 +58,24 @@ public class JukeBoxGUI extends JFrame {
 	private User currentUser;
 	private JPanel playlistQueue;
 	private JLabel playlistLabel;
+	private static JukeBoxGUI instance;
 
 
 	// Creates a new instance of the GUI
 	public static void main(String[] args){
 		JukeBoxGUI jukeboxGUI = new JukeBoxGUI();
+		instance = jukeboxGUI;
 		jukeboxGUI.setVisible(true);
 	}
 	
-	public void update() {
-		System.out.println("jukeBox.toString() " +jukeBox.toString());
-		playlistLabel = new JLabel();
-		playlistLabel.setText("WIT");
-		//playlistLabel.setText(jukeBox.toString());
+	public void update(String str) {
+		//System.out.println("jukeBox.toString() " +jukeBox.toString());
+		//playlistLabel = new JLabel();
+		//playlistLabel.setText("WIT");
+		playlistLabel.repaint();
+		playlistLabel.setText(str);
+		System.out.println(str);
+		playlistLabel.repaint();
 	}
 
 	// Creates the GUI for the Jukebox, including the frame and buttons
@@ -171,13 +176,14 @@ public class JukeBoxGUI extends JFrame {
 		
 	}
 	
-	public static JukeBoxGUI getInstance(){
-		return new JukeBoxGUI();
+	public static JukeBoxGUI getInstance() {
+		return instance;
 	}
-
+	
 	// Creates a new instance of the JukeBox
 	private void initializeJukeBox() {
 		//singleton design pattern
+		//jukeBox = new JukeBox();
 		jukeBox = JukeBox.getInstance();
 
 		//check if the inputted values are correct
