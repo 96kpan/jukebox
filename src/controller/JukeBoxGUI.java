@@ -221,13 +221,12 @@ public class JukeBoxGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			//action listener for the button command
 			//the button should allow the user to add a song into the queue
-			
 				
 			if(e.getActionCommand().equals("<-")){
 				int index = table.getSelectedRow();
 				int correctedIndex = table.convertRowIndexToModel(index);
 				inputSong = jukeBox.getSong(correctedIndex);
-				if(inputUserStr.equals("") || inputPasswordStr.equals("") ){
+				if(inputUserStr.equals("") && inputPasswordStr.equals("") ){
 					JOptionPane.showMessageDialog(null, "Input username and password please");
 					return;
 				}
@@ -265,9 +264,6 @@ public class JukeBoxGUI extends JFrame {
 					}
 				}
 			}
-			
-			
-		
 		}
 
 		// Resets the user text boxes and string displays
