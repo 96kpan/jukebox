@@ -128,10 +128,11 @@ public class JukeBox {
 	}
 	
 	public String toString() {
-		String result = "";
+		String result = "<html>";
 		for(Song tempSong : songQueue) {
-			result = result + tempSong.getTime() + " " + tempSong.getTitle() + " by " + tempSong.getArtist() + "\n";
+			result = result + tempSong.getTime() + " " + tempSong.getTitle() + " by " + tempSong.getArtist() + "<br>";
 		}
+		result += "</html>";
 		return result;
 	}
 
