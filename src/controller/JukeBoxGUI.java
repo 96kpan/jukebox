@@ -105,22 +105,22 @@ public class JukeBoxGUI extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(3,3));
 
-		//set button "Select Song 1"
-		JButton selectSongButton1 = new JButton();
-		selectSongButton1.setText("Select song 1");
-		ButtonListener song1 = new ButtonListener();
-		selectSongButton1.addActionListener(song1);
-
-		//set button "Select Song 2"
-		JButton selectSongButton2 = new JButton();
-		selectSongButton2.setText("Select song 2");
-		ButtonListener song2 = new ButtonListener();
-		selectSongButton2.addActionListener(song2);
-
-		buttonPanel.add(selectSongButton1);
-		buttonPanel.add(selectSongButton2);
-
-		this.add(buttonPanel);
+//		//set button "Select Song 1"
+//		JButton selectSongButton1 = new JButton();
+//		selectSongButton1.setText("Select song 1");
+//		ButtonListener song1 = new ButtonListener();
+//		selectSongButton1.addActionListener(song1);
+//
+//		//set button "Select Song 2"
+//		JButton selectSongButton2 = new JButton();
+//		selectSongButton2.setText("Select song 2");
+//		ButtonListener song2 = new ButtonListener();
+//		selectSongButton2.addActionListener(song2);
+//
+//		buttonPanel.add(selectSongButton1);
+//		buttonPanel.add(selectSongButton2);
+//
+//		this.add(buttonPanel);
 
 		//Account information-- account name, password, signout button
 		//and login button
