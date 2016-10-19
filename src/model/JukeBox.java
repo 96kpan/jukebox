@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import controller.JukeBoxGUI;
 import songplayer.EndOfSongEvent;
 import songplayer.EndOfSongListener;
 import songplayer.SongPlayer;
@@ -32,15 +33,21 @@ public class JukeBox {
 	private Song thisSong;
 	private Queue<Song> songQueue;
 	private boolean currentPlaying;
-
+	private JukeBoxGUI gui;
 
 	// Creates the new JukeBox
-	public JukeBox() {
+	private JukeBox() {
 		initializeJukeBox();
 	}
+	
+	public static JukeBox getInstance(){
+		return new JukeBox();
+	}
+	
 
 	// Initializes a new songQueue and creates the song list and user list
 	private void initializeJukeBox() {
+		
 		songQueue = new LinkedList<Song>();
 		//System.out.println(songQueue.toString());
 		setSongList();
@@ -52,7 +59,7 @@ public class JukeBox {
 	public void playSong(Song song) {
 		songQueue.add(song);
 		//System.out.println(song.getTitle() + " added to queue");
-		System.out.println(toString());
+		//System.out.println(toString());
 		thisUser.incStatus();
 		thisSong.incStatus();
 		thisUser.negateTime(song);
@@ -64,6 +71,7 @@ public class JukeBox {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
 		if(!currentPlaying) {
 			SongPlayer.playFile(waitForSongEnd, songQueue.peek().getFileName());
+			
 			currentPlaying = true;
 		}
 	}
@@ -129,10 +137,13 @@ public class JukeBox {
 	
 	public String toString() {
 		String result = "<html>";
+		
+		System.out.println(songQueue.size());
 		for(Song tempSong : songQueue) {
 			result = result + tempSong.getTime() + " " + tempSong.getTitle() + " by " + tempSong.getArtist() + "<br>";
 		}
 		result += "</html>";
+		//System.out.println(result);
 		return result;
 	}
 
@@ -144,8 +155,9 @@ public class JukeBox {
 
 		// Prints a message, waits 1 second, and plays the next song if possible once song finishes playing
 		public void songFinishedPlaying(EndOfSongEvent eosEvent) {
-			System.out.println("Finished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
-					+ eosEvent.finishedTime());
+			//System.out.println("Finished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
+			//		+ eosEvent.finishedTime());
+			//System.out.println(JukeBox.getInstance().toString());
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -154,9 +166,13 @@ public class JukeBox {
 			}
 			currentPlaying = false;
 			songQueue.remove();
+		
+			gui = JukeBoxGUI.getInstance();
+			gui.update();
 			if(!songQueue.isEmpty()) {
 				playQueue();
 			}
+			
 		}
 	}
 }

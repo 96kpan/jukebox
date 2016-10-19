@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/12 @ 10:39AM
+ *	Last Edited: 10/18 4:48pm
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -19,6 +19,9 @@ package controller;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,8 +44,8 @@ public class JukeBoxGUI extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final int width = 375;
-	public static final int height = 250;
+	public static final int width = 1500;
+	public static final int height = 1500;
 	private JukeBox jukeBox;
 	private JLabel accountStatus;
 	private JTextField accountText;
@@ -51,6 +54,8 @@ public class JukeBoxGUI extends JFrame {
 	private String inputPasswordStr = "";
 	private Song inputSong;
 	private User currentUser;
+	private JPanel playlistQueue;
+	private JLabel playlistLabel;
 
 
 	// Creates a new instance of the GUI
@@ -58,9 +63,15 @@ public class JukeBoxGUI extends JFrame {
 		JukeBoxGUI jukeboxGUI = new JukeBoxGUI();
 		jukeboxGUI.setVisible(true);
 	}
+	
+	public void update() {
+	//	System.out.println(jukeBox.toString());
+	//	System.out.println();
+		playlistLabel.setText(jukeBox.toString());
+	}
 
 	// Creates the GUI for the Jukebox, including the frame and buttons
-	public JukeBoxGUI(){
+	private JukeBoxGUI(){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
 
@@ -71,7 +82,7 @@ public class JukeBoxGUI extends JFrame {
 
 		//song button panel
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(2, 1));
+		buttonPanel.setLayout(new GridLayout(3,3));
 
 		//set button "Select Song 1"
 		JButton selectSongButton1 = new JButton();
@@ -118,21 +129,35 @@ public class JukeBoxGUI extends JFrame {
 		accountInfoBox.add(signOutButton);
 		accountInfoBox.add(loginButton);
 		accountInfoBox.add(accountStatus);
-
-		this.add(accountInfoBox);
-
+		
 		initializeJukeBox();
+		
+		playlistQueue = new JPanel();
+		playlistQueue.setBackground(Color.white);
+		playlistLabel = new JLabel();
+		playlistLabel.setText(jukeBox.toString());
+		playlistQueue.add(playlistLabel);
+		
+		
+		this.add(playlistQueue);
+		this.add(accountInfoBox);
+		
+	}
+	
+	public static JukeBoxGUI getInstance(){
+		return new JukeBoxGUI();
 	}
 
 	// Creates a new instance of the JukeBox
 	private void initializeJukeBox() {
-		jukeBox = new JukeBox();
+		//singleton design pattern
+		jukeBox = JukeBox.getInstance();
 
 		//check if the inputted values are correct
 		//if true, update the values
 
 	}
-
+	
 	private class ButtonListener implements ActionListener {
 
 		@SuppressWarnings("deprecation")
@@ -143,6 +168,7 @@ public class JukeBoxGUI extends JFrame {
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
+					playlistLabel.setText(jukeBox.toString());
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Cannot play song 1");
@@ -154,6 +180,7 @@ public class JukeBoxGUI extends JFrame {
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
+					playlistLabel.setText(jukeBox.toString());
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Cannot play song 2");
