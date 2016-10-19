@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/19 8:15
+ *	Last Edited: 10/19 11:46 am
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -141,7 +141,7 @@ public class JukeBoxGUI extends JFrame {
 		loginButton.addActionListener(login);
 
 		accountStatus = new JLabel();
-		accountStatus.setText("Status: Login first");
+		accountStatus.setText("    Status: Login first");
 
 		accountInfoBox.add(accountName);
 		accountInfoBox.add(accountText);
@@ -183,7 +183,6 @@ public class JukeBoxGUI extends JFrame {
 		JPanel rightSide = new JPanel();
 		this.model = new PlayList(jukeBox.getSongList());
 		this.table = new JTable(this.model);
-		TableModelListener t = new TableModelListener();
 		JScrollPane scrollPane = new JScrollPane(this.table);
 		RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(this.model);
 		this.table.setRowSorter(rowSorter);
@@ -220,20 +219,19 @@ public class JukeBoxGUI extends JFrame {
 		@SuppressWarnings("deprecation")
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getActionCommand().equals("Select song 1")){
-				inputSong = jukeBox.getSong(4);
-				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
-					jukeBox.playSong(inputSong);
-					accountStatus.setText(currentUser.labelString());
-					playlistLabel.setText(jukeBox.toString());
+			//action listener for the button command
+			//the button should allow the user to add a song into the queue
+			
+				
+			if(e.getActionCommand().equals("<-")){
+				int index = table.getSelectedRow();
+				int correctedIndex = table.convertRowIndexToModel(index);
+				inputSong = jukeBox.getSong(correctedIndex);
+				if(inputUserStr.equals("") || inputPasswordStr.equals("") ){
+					JOptionPane.showMessageDialog(null, "Input username and password please");
+					return;
 				}
-				else{
-					JOptionPane.showMessageDialog(null, "Cannot play song 1");
-				}
-
-			}
-			else if(e.getActionCommand().equals("Select song 2")){
-				inputSong = jukeBox.getSong(8);
+				
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
@@ -241,7 +239,8 @@ public class JukeBoxGUI extends JFrame {
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Cannot play song 2");
-				}
+				}	
+				
 			}
 			else if(e.getActionCommand().equals("Sign out")){
 				resetUser();
@@ -267,12 +266,8 @@ public class JukeBoxGUI extends JFrame {
 				}
 			}
 			
-			//action listener for the button command
-			//the button should allow the user to add a song into the queue
-			else if(e.getActionCommand().equals("<-")){
-				model.getValueAt(rowIndex, columnIndex)
-				System.out.println("Here in the <- button");
-			}
+			
+		
 		}
 
 		// Resets the user text boxes and string displays
