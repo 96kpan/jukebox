@@ -17,9 +17,10 @@
  */
 
 package model;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class User {
+public class User implements Serializable {
 	private String acc_name;
 	private String password;
 	private int play_status;

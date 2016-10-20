@@ -18,9 +18,10 @@
 
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Song {
+public class Song implements Serializable{
 	private String title;
 	private String fileName;
 	private String artist;

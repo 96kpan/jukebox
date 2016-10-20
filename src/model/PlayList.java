@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,7 +9,7 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-public class PlayList implements TableModel{
+public class PlayList implements TableModel, Serializable{
 	
 	private ArrayList<Song> playlistLibrary;
 	private static final List<String> columnNames = Collections.unmodifiableList(Arrays.asList(new String[] { "Artist", "Title", "Length"}));

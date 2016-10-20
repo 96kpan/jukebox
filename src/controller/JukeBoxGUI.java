@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/19 11:46 am
+ *	Last Edited: 10/20 8:09 am
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -279,21 +279,19 @@ public class JukeBoxGUI extends JFrame {
 			list = new JList(listModel);
 
 			JScrollPane queuePane = new JScrollPane(list);
-			queuePane.setSize(310, 340);
-			queuePane.setLocation(10, 10);
-			add(queuePane, BorderLayout.CENTER);
+			
 			if (listModel.getSize()>0){
-				((PlayList) listModel).play(((PlayList) listModel).get(0));
+				//((PlayList) listModel).play(((PlayList) listModel).get(0));
 				list.updateUI();
 			}
-			model = jukeBox.songLibrary;
-			tr = new TableRowSorter(model);
-			songTable = new JTable(model);
-			songTable.setRowSorter(tr);
-			JScrollPane scrollPane = new JScrollPane(songTable);
-			scrollPane.setSize(710, 680);
-			scrollPane.setLocation(360, 10);
-			add(scrollPane, BorderLayout.CENTER);
+//			model = jukeBox.songLibrary;
+//			tr = new TableRowSorter(model);
+//			songTable = new JTable(model);
+//			songTable.setRowSorter(tr);
+//			JScrollPane scrollPane = new JScrollPane(songTable);
+//			scrollPane.setSize(710, 680);
+//			scrollPane.setLocation(360, 10);
+//			add(scrollPane, BorderLayout.CENTER);
 
 		}
 
@@ -307,7 +305,7 @@ public class JukeBoxGUI extends JFrame {
 				try {
 					FileOutputStream fos = new FileOutputStream("myfile");
 					ObjectOutputStream outFile = new ObjectOutputStream(fos);
-					outFile.writeObject(jukeBox);
+					outFile.writeObject(jukeBox); //error line
 					outFile.close();
 				} catch (IOException e1) {
 					System.out.println("Save failed");

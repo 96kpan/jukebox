@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,7 +8,7 @@ import java.util.Queue;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-public class SongQueue implements ListModel{
+public class SongQueue implements ListModel, Serializable{
 	
 	private Queue<Song> songList;
 	
