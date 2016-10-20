@@ -16,10 +16,14 @@
  */
 
 package model;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.swing.JList;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -28,7 +32,7 @@ import songplayer.EndOfSongEvent;
 import songplayer.EndOfSongListener;
 import songplayer.SongPlayer;
 
-public class JukeBox{
+public class JukeBox implements Serializable{
 
 	private ArrayList<Song> songList;
 	private ArrayList<User> userList;
@@ -39,6 +43,8 @@ public class JukeBox{
 	private JukeBoxGUI gui;
 	private static JukeBox instance = new JukeBox();
 	private String playList;
+	private SongQueue newSongQueue;
+	private JList list;
 
 	// Creates the new JukeBox
 	private JukeBox() {
@@ -53,6 +59,8 @@ public class JukeBox{
 	private void initializeJukeBox() {
 		
 		songQueue = new LinkedList<Song>();
+		newSongQueue = new SongQueue(songQueue);
+		
 		//System.out.println(songQueue.toString());
 		setSongList();
 		setUserList();
@@ -174,6 +182,13 @@ public class JukeBox{
 			//System.out.println("Finished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
 			//		+ eosEvent.finishedTime());
 			//System.out.println(JukeBox.getInstance().toString());
+		
+			JukeBox object = JukeBox.getInstance();
+			JukeBoxGUI gui = JukeBoxGUI.getInstance();
+			
+			//list.setModel(gui.getListModel());
+			//list.updateUI();
+			
 			try {
 				//System.out.println("here");
 				Thread.sleep(1000);
@@ -184,11 +199,11 @@ public class JukeBox{
 			}
 			songQueue.remove();
 			
-			JukeBox object = JukeBox.getInstance();
-			JukeBoxGUI gui = JukeBoxGUI.getInstance();
-			gui.update(object.toString());
+
+			
+			
 			//System.out.println(object.toString());
-			//gui.update();
+			gui.update();
 			if(!songQueue.isEmpty()) {
 				//System.out.println("here4");
 				playQueue();
@@ -196,4 +211,5 @@ public class JukeBox{
 			
 		}
 	}
+	
 }

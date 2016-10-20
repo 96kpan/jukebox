@@ -27,6 +27,13 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -38,6 +45,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.RowSorter;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListDataListener;
@@ -48,7 +56,7 @@ import javax.swing.table.TableRowSorter;
 import model.JukeBox;
 import model.PlayList;
 import model.Song;
-import model.SongLibrary;
+import model.SongQueue;
 import model.User;
 
 public class JukeBoxGUI extends JFrame {
@@ -72,7 +80,9 @@ public class JukeBoxGUI extends JFrame {
 	private static JukeBoxGUI instance;
 	private TableModel model;
 	private JTable table;
-
+	private ListModel listModel;
+	private JList list;
+	private JScrollPane scrollPaneList;
 
 	// Creates a new instance of the GUI
 	public static void main(String[] args){
@@ -80,15 +90,20 @@ public class JukeBoxGUI extends JFrame {
 		instance = jukeboxGUI;
 		jukeboxGUI.setVisible(true);
 	}
-	
-	public void update(String str) {
+
+	public void update() {
 		//System.out.println("jukeBox.toString() " +jukeBox.toString());
 		//playlistLabel = new JLabel();
 		//playlistLabel.setText("WIT");
-		playlistLabel.repaint();
-		playlistLabel.setText(str);
-		System.out.println(str);
-		playlistLabel.repaint();
+		//		playlistLabel.repaint();
+		//		playlistLabel.setText(str);
+
+		//		playlistLabel.repaint();
+		listModel = new SongQueue(jukeBox.getQueue());
+		System.out.println("update");
+		list.setModel(listModel);
+		list.updateUI();
+
 	}
 
 	// Creates the GUI for the Jukebox, including the frame and buttons
@@ -97,6 +112,8 @@ public class JukeBoxGUI extends JFrame {
 		this.setSize(width, height);
 
 		this.setLayout(new FlowLayout());
+		WindowListener w = new Save();
+		this.addWindowListener(w);
 
 		this.setLocation(100, 40);
 		this.setTitle("JukeBox");
@@ -105,22 +122,22 @@ public class JukeBoxGUI extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(3,3));
 
-//		//set button "Select Song 1"
-//		JButton selectSongButton1 = new JButton();
-//		selectSongButton1.setText("Select song 1");
-//		ButtonListener song1 = new ButtonListener();
-//		selectSongButton1.addActionListener(song1);
-//
-//		//set button "Select Song 2"
-//		JButton selectSongButton2 = new JButton();
-//		selectSongButton2.setText("Select song 2");
-//		ButtonListener song2 = new ButtonListener();
-//		selectSongButton2.addActionListener(song2);
-//
-//		buttonPanel.add(selectSongButton1);
-//		buttonPanel.add(selectSongButton2);
-//
-//		this.add(buttonPanel);
+		//		//set button "Select Song 1"
+		//		JButton selectSongButton1 = new JButton();
+		//		selectSongButton1.setText("Select song 1");
+		//		ButtonListener song1 = new ButtonListener();
+		//		selectSongButton1.addActionListener(song1);
+		//
+		//		//set button "Select Song 2"
+		//		JButton selectSongButton2 = new JButton();
+		//		selectSongButton2.setText("Select song 2");
+		//		ButtonListener song2 = new ButtonListener();
+		//		selectSongButton2.addActionListener(song2);
+		//
+		//		buttonPanel.add(selectSongButton1);
+		//		buttonPanel.add(selectSongButton2);
+		//
+		//		this.add(buttonPanel);
 
 		//Account information-- account name, password, signout button
 		//and login button
@@ -150,34 +167,51 @@ public class JukeBoxGUI extends JFrame {
 		accountInfoBox.add(signOutButton);
 		accountInfoBox.add(loginButton);
 		accountInfoBox.add(accountStatus);
-		
+
 		initializeJukeBox();
-		
+
 		//adds the playlist queue onto the left side
 		//of the gui
 		playlistQueue = new JPanel();
 		JLabel queueLabel = new JLabel("Play List (Song at top is playing)");
 		playlistQueue.setBackground(Color.white);
+
+		this.listModel = new SongQueue(jukeBox.getQueue());
+		this.list = new JList(this.listModel);
+		scrollPaneList = new JScrollPane(this.list);
+
+		if(listModel.getSize() > 0)
+
+			scrollPaneList.add(list);
 		playlistQueue.add(queueLabel);
 		playlistLabel = new JLabel();
 		playlistLabel.setText(jukeBox.toString());
 		playlistQueue.add(playlistLabel);
-		
+
+		/*
+		 * JPanel rightSide = new JPanel();
+		this.model = new PlayList(jukeBox.getSongList());
+		this.table = new JTable(this.model);
+		JScrollPane scrollPane = new JScrollPane(this.table);
+		RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(this.model);
+		this.table.setRowSorter(rowSorter);
+		 */
+
 		//this jpanel includes the label of the playlist,
 		//the playlist queue, and the account info box
 		JPanel leftSide = new JPanel();
 		leftSide.setLayout(new GridLayout(3, 1, 20, 20));
 		leftSide.add(queueLabel);
-		leftSide.add(playlistQueue);
+		leftSide.add(scrollPaneList);
 		leftSide.add(accountInfoBox);
-		
+
 		//the arrowbutton JButton that will allow the user to 
 		//add a song of their choice into the jukebox queue
 		JButton arrowButton = new JButton();
 		arrowButton.setText("<-");
 		ButtonListener b = new ButtonListener();
 		arrowButton.addActionListener(b);
-		
+
 		//RIGHT SIDE OF THE GUI
 		//This side will include the songs with options of sorting
 		JPanel rightSide = new JPanel();
@@ -186,19 +220,19 @@ public class JukeBoxGUI extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(this.table);
 		RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(this.model);
 		this.table.setRowSorter(rowSorter);
-	    // Add panel to frame
-	    rightSide.add(scrollPane, BorderLayout.CENTER);
+		// Add panel to frame
+		rightSide.add(scrollPane, BorderLayout.CENTER);
 
 		this.add(leftSide);
 		this.add(arrowButton);
 		this.add(rightSide);
-		
+
 	}
-	
+
 	public static JukeBoxGUI getInstance() {
 		return instance;
 	}
-	
+
 	// Creates a new instance of the JukeBox
 	private void initializeJukeBox() {
 		//singleton design pattern
@@ -209,11 +243,116 @@ public class JukeBoxGUI extends JFrame {
 		//if true, update the values
 
 	}
-	
+
 	public JukeBox getJukeBox(){
 		return jukeBox;
 	}
-	
+
+	public ListModel getListModel(){
+		return this.listModel;
+	}
+
+	private class Save implements WindowListener{
+
+		@Override
+		public void windowOpened(WindowEvent e) {
+			// TODO Auto-generated method stub
+			JOptionPane optionPane = new JOptionPane();
+			optionPane.setMessage("Start from earlier save?");
+			int n = optionPane.showConfirmDialog(null, "Start from earlier save?", "Save State", JOptionPane.YES_NO_OPTION);
+
+			if(n == optionPane.YES_OPTION){
+				try {
+					FileInputStream fis = new FileInputStream("myfile");
+					ObjectInputStream input = new ObjectInputStream(fis);
+					jukeBox = (JukeBox) input.readObject();
+					input.close();
+					fis.close();
+				} catch (Exception i) {
+					jukeBox = JukeBox.getInstance();
+				}
+			}
+			else{
+				jukeBox = JukeBox.getInstance();
+			}
+
+			list = new JList(listModel);
+
+			JScrollPane queuePane = new JScrollPane(list);
+			queuePane.setSize(310, 340);
+			queuePane.setLocation(10, 10);
+			add(queuePane, BorderLayout.CENTER);
+			if (listModel.getSize()>0){
+				((PlayList) listModel).play(((PlayList) listModel).get(0));
+				list.updateUI();
+			}
+			model = jukeBox.songLibrary;
+			tr = new TableRowSorter(model);
+			songTable = new JTable(model);
+			songTable.setRowSorter(tr);
+			JScrollPane scrollPane = new JScrollPane(songTable);
+			scrollPane.setSize(710, 680);
+			scrollPane.setLocation(360, 10);
+			add(scrollPane, BorderLayout.CENTER);
+
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			JOptionPane jop = new JOptionPane();
+			jop.setMessage("Save?");
+			int n = jop.showConfirmDialog(null, "Save?", "Save State", JOptionPane.YES_NO_CANCEL_OPTION);
+
+			if (n == jop.YES_OPTION) {
+				try {
+					FileOutputStream fos = new FileOutputStream("myfile");
+					ObjectOutputStream outFile = new ObjectOutputStream(fos);
+					outFile.writeObject(jukeBox);
+					outFile.close();
+				} catch (IOException e1) {
+					System.out.println("Save failed");
+					e1.printStackTrace();
+				}
+				System.exit(0);
+			}
+			if (n == jop.NO_OPTION)
+				System.exit(0);
+
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+
 	private class ButtonListener implements ActionListener {
 
 		@SuppressWarnings("deprecation")
@@ -221,7 +360,7 @@ public class JukeBoxGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			//action listener for the button command
 			//the button should allow the user to add a song into the queue
-				
+
 			if(e.getActionCommand().equals("<-")){
 				int index = table.getSelectedRow();
 				int correctedIndex = table.convertRowIndexToModel(index);
@@ -230,7 +369,7 @@ public class JukeBoxGUI extends JFrame {
 					JOptionPane.showMessageDialog(null, "Input username and password please");
 					return;
 				}
-				
+
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					jukeBox.playSong(inputSong);
 					accountStatus.setText(currentUser.labelString());
@@ -239,7 +378,7 @@ public class JukeBoxGUI extends JFrame {
 				else{
 					JOptionPane.showMessageDialog(null, "Cannot play song 2");
 				}	
-				
+
 			}
 			else if(e.getActionCommand().equals("Sign out")){
 				resetUser();
@@ -260,7 +399,7 @@ public class JukeBoxGUI extends JFrame {
 					if(jukeBox.validate(inputUserStr, inputPasswordStr)){
 						currentUser = jukeBox.getUser();
 						accountStatus.setText(currentUser.labelString());
-						
+
 					}
 				}
 			}
