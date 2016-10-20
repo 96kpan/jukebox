@@ -19,11 +19,7 @@ package controller;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,9 +43,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.RowSorter;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -92,11 +85,6 @@ public class JukeBoxGUI extends JFrame {
 	}
 
 	public void update() {
-		//System.out.println("jukeBox.toString() " +jukeBox.toString());
-		//playlistLabel = new JLabel();
-		//playlistLabel.setText("WIT");
-		//		playlistLabel.repaint();
-		//		playlistLabel.setText(str);
 
 		//		playlistLabel.repaint();
 		listModel = new SongQueue(jukeBox.getQueue());
@@ -121,23 +109,6 @@ public class JukeBoxGUI extends JFrame {
 		//song button panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(3,3));
-
-		//		//set button "Select Song 1"
-		//		JButton selectSongButton1 = new JButton();
-		//		selectSongButton1.setText("Select song 1");
-		//		ButtonListener song1 = new ButtonListener();
-		//		selectSongButton1.addActionListener(song1);
-		//
-		//		//set button "Select Song 2"
-		//		JButton selectSongButton2 = new JButton();
-		//		selectSongButton2.setText("Select song 2");
-		//		ButtonListener song2 = new ButtonListener();
-		//		selectSongButton2.addActionListener(song2);
-		//
-		//		buttonPanel.add(selectSongButton1);
-		//		buttonPanel.add(selectSongButton2);
-		//
-		//		this.add(buttonPanel);
 
 		//Account information-- account name, password, signout button
 		//and login button
@@ -185,17 +156,8 @@ public class JukeBoxGUI extends JFrame {
 			scrollPaneList.add(list);
 		playlistQueue.add(queueLabel);
 		playlistLabel = new JLabel();
-		playlistLabel.setText(jukeBox.toString());
+		playlistLabel.setText(jukeBox.toString()); //needs to be a jlist
 		playlistQueue.add(playlistLabel);
-
-		/*
-		 * JPanel rightSide = new JPanel();
-		this.model = new PlayList(jukeBox.getSongList());
-		this.table = new JTable(this.model);
-		JScrollPane scrollPane = new JScrollPane(this.table);
-		RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(this.model);
-		this.table.setRowSorter(rowSorter);
-		 */
 
 		//this jpanel includes the label of the playlist,
 		//the playlist queue, and the account info box
@@ -284,14 +246,7 @@ public class JukeBoxGUI extends JFrame {
 				//((PlayList) listModel).play(((PlayList) listModel).get(0));
 				list.updateUI();
 			}
-//			model = jukeBox.songLibrary;
-//			tr = new TableRowSorter(model);
-//			songTable = new JTable(model);
-//			songTable.setRowSorter(tr);
-//			JScrollPane scrollPane = new JScrollPane(songTable);
-//			scrollPane.setSize(710, 680);
-//			scrollPane.setLocation(360, 10);
-//			add(scrollPane, BorderLayout.CENTER);
+			//need to save all of the information from the past
 
 		}
 
@@ -370,11 +325,12 @@ public class JukeBoxGUI extends JFrame {
 
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					jukeBox.playSong(inputSong);
+					System.out.println(inputSong.getTitle());
 					accountStatus.setText(currentUser.labelString());
 					playlistLabel.setText(jukeBox.toString());
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Cannot play song 2");
+					JOptionPane.showMessageDialog(null, "Cannot play song");
 				}	
 
 			}
