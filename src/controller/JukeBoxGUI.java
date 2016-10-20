@@ -150,11 +150,10 @@ public class JukeBoxGUI extends JFrame {
 		this.listModel = new SongQueue(jukeBox.getQueue());
 		this.list = new JList(this.listModel);
 		scrollPaneList = new JScrollPane(this.list);
-		scrollPaneList.add(list);
 		playlistQueue.add(queueLabel);
 		playlistLabel = new JLabel();
 		playlistLabel.setText(jukeBox.toString()); //needs to be a jlist
-		//playlistLabel.add(scrollPaneList);
+		playlistLabel.add(scrollPaneList);
 		playlistQueue.add(playlistLabel);
 
 		//this jpanel includes the label of the playlist,
@@ -326,8 +325,9 @@ public class JukeBoxGUI extends JFrame {
 					System.out.println("size " + jukeBox.getQueue().size());
 					System.out.println(inputSong.getTitle());
 					accountStatus.setText(currentUser.labelString());
-					playlistLabel.setText(jukeBox.toString());
-					scrollPaneList.updateUI();
+					//playlistLabel.setText(jukeBox.toString());
+					list.setModel(listModel);
+					list.updateUI();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Cannot play song");
