@@ -79,7 +79,7 @@ public class JukeBox implements Serializable{
 	// Plays the song passed through the parameter and increments status of thisUser and thisSong
 	public void playSong(Song song) {
 		songQueue.add(song);
-		System.out.println(songQueue.toString());
+		System.out.println(songQueue.toString() + " HELLO?");
 		JukeBoxGUI.getInstance().getQueue().add(song);
 		//System.out.println(song.getTitle() + " added to queue");
 		//System.out.println(toString());
@@ -91,9 +91,14 @@ public class JukeBox implements Serializable{
 	}
 	
 	public void addSong(Song song) {
+		System.out.println(songQueue.toString());
 		songQueue.add(song);
-		System.out.println(song.getTitle() + " added to queue");
+		System.out.println(song.getTitle() + " added to queue 2");
 		playQueue();
+	}
+	
+	public void resetQueue() {
+		songQueue = new LinkedList<Song>();
 	}
 
 	// Plays the start of the song queue
@@ -243,7 +248,6 @@ public class JukeBox implements Serializable{
 				Thread.sleep(1000);
 				currentPlaying = false;
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			songQueue.remove();

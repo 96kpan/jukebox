@@ -236,14 +236,14 @@ public class JukeBoxGUI extends JFrame {
 			Queue<Song> temp_queue = null;
 			boolean changed = false;
 			ArrayList<User> temp_user = new ArrayList<User>();
-			
+			jukeBox.initializeJukeBox();
 			if(n == optionPane.YES_OPTION){
 				try {
 					FileInputStream fis = new FileInputStream("jukebox_savedata");
 					ObjectInputStream input = new ObjectInputStream(fis);
 					jukeBox = (JukeBox) input.readObject();
 					temp_user = jukeBox.getUserList();
-					System.out.println(jukeBox.getUserList().toString());
+					//System.out.println(jukeBox.getUserList().toString());
 					input.close();
 					fis.close();
 					
@@ -268,11 +268,13 @@ public class JukeBoxGUI extends JFrame {
 			}
 			
 			jukeBox.currentChange();
+			jukeBox.resetQueue();
 
 			if(changed) {
 				for(int x = 0; x < temp.size(); x++) {
 					listModel.addElement(temp.getElementAt(x));
 					jukeBox.addSong(temp_queue.peek());
+					System.out.println(temp_queue.peek().getTitle() + " added to queue 1");
 					temp_queue.remove();
 				}
 				//System.out.println(temp_queue.toString());
