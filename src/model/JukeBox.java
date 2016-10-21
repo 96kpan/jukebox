@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/19 8:15
+ *	Last Edited: 10/20 19:25
  *
  *	JukeBox.java-------------------------------
  *	|
@@ -151,20 +151,36 @@ public class JukeBox implements Serializable{
 		userList.add(new User("Ryan", "4444"));
 	}
 	
-	public String toString() {
-		StringBuilder result = new StringBuilder();
-		result.append("<html>");
+	public ArrayList<String> listString() {
+//		String[] result = new String[27];
+//		Queue<Song> temp = new LinkedList<Song>();
+//		temp.addAll(songQueue);
+//		int index = 0;
+//		for(Song s : temp) {
+//			result[index] = s.getTime() + " " + s.getTitle() + " by " + s.getArtist();
+//			index++;
+//		}
 		
+		ArrayList<String> result = new ArrayList<>();
 		Queue<Song> temp = new LinkedList<Song>();
 		temp.addAll(songQueue);
-		for(Song s : temp){
-			result.append(s.getTime() + " " + s.getTitle() + " by " + s.getArtist() + "<br>");
+		for(Song s : temp) {
+			result.add(s.getTime() + " " + s.getTitle() + " by " + s.getArtist());
 		}
-
-		result.append("</html>");
-		//System.out.println(result.toString());
-		playList = result.toString();
-		return result.toString();
+		
+//		StringBuilder result = new StringBuilder();
+//		result.append("<html>");
+//		
+//		
+//		for(Song s : temp){
+//			result.append(s.getTime() + " " + s.getTitle() + " by " + s.getArtist() + "<br>");
+//		}
+//
+//		result.append("</html>");
+//		//System.out.println(result.toString());
+//		playList = result.toString();
+//		return result.toString();
+		return result;
 	}
 
 	/**

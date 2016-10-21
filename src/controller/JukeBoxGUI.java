@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/20 8:09 am
+ *	Last Edited: 10/20 19:25
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,7 +50,6 @@ import javax.swing.table.TableRowSorter;
 import model.JukeBox;
 import model.PlayList;
 import model.Song;
-import model.SongQueue;
 import model.User;
 
 public class JukeBoxGUI extends JFrame {
@@ -73,7 +73,7 @@ public class JukeBoxGUI extends JFrame {
 	private static JukeBoxGUI instance;
 	private TableModel model;
 	private JTable table;
-	private ListModel listModel;
+	private DefaultListModel listModel;
 	private JList list;
 	private JScrollPane scrollPaneList;
 
@@ -85,13 +85,9 @@ public class JukeBoxGUI extends JFrame {
 	}
 
 	public void update() {
-
-		//		playlistLabel.repaint();
-		listModel = new SongQueue(jukeBox.getQueue());
-		System.out.println("update");
-		list.setModel(listModel);
-		list.updateUI();
-
+		if(listModel.getSize() != 0) {
+			listModel.remove(0);
+		}
 	}
 
 	// Creates the GUI for the Jukebox, including the frame and buttons
@@ -147,8 +143,12 @@ public class JukeBoxGUI extends JFrame {
 		JLabel queueLabel = new JLabel("Play List (Song at top is playing)");
 		playlistQueue.setBackground(Color.white);
 
-		this.listModel = new SongQueue(jukeBox.getQueue());
-		this.list = new JList(this.listModel);
+		//this.listModel = new SongQueue(jukeBox.getQueue());
+		
+		listModel = new DefaultListModel<String>();
+		
+		this.list = new JList(listModel);
+		
 		scrollPaneList = new JScrollPane(this.list);
 		playlistQueue.add(queueLabel);
 		playlistLabel = new JLabel();
@@ -326,6 +326,7 @@ public class JukeBoxGUI extends JFrame {
 					System.out.println(inputSong.getTitle());
 					accountStatus.setText(currentUser.labelString());
 					//playlistLabel.setText(jukeBox.toString());
+					listModel.addElement(inputSong.getTime() + " " + inputSong.getTitle() + " by " + inputSong.getArtist());
 					list.setModel(listModel);
 					list.updateUI();
 				}
