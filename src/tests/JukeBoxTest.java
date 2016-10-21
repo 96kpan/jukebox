@@ -30,7 +30,7 @@ import org.junit.Test;
 public class JukeBoxTest {
 	@Test
 	public void test() {
-		JukeBox jukeBox = new JukeBox();
+		JukeBox jukeBox = JukeBox.getInstance();
 		User user = new User("Chris", "1");
 		Song song = new Song("Unknown", "Space Music", "./songfiles/spacemusic.au", 6);
 		assertTrue(jukeBox.validate(user.getName(), user.getPassword()));

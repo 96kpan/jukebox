@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/20 19:25
+ *	Last Edited: 10/20 20:49
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -30,6 +30,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -76,6 +79,7 @@ public class JukeBoxGUI extends JFrame {
 	private DefaultListModel listModel;
 	private JList list;
 	private JScrollPane scrollPaneList;
+	private Queue<Song> queue;
 
 	// Creates a new instance of the GUI
 	public static void main(String[] args){
@@ -87,7 +91,13 @@ public class JukeBoxGUI extends JFrame {
 	public void update() {
 		if(listModel.getSize() != 0) {
 			listModel.remove(0);
+			queue.remove(0);
 		}
+		//System.out.println(queue.toString());
+	}
+	
+	public Queue<Song> getQueue() {
+		return queue;
 	}
 
 	// Creates the GUI for the Jukebox, including the frame and buttons
@@ -197,7 +207,7 @@ public class JukeBoxGUI extends JFrame {
 		//singleton design pattern
 		//jukeBox = new JukeBox();
 		jukeBox = JukeBox.getInstance();
-
+		queue = new LinkedList<Song>();
 		//check if the inputted values are correct
 		//if true, update the values
 
@@ -207,7 +217,7 @@ public class JukeBoxGUI extends JFrame {
 		return jukeBox;
 	}
 
-	public ListModel getListModel(){
+	public DefaultListModel getListModel(){
 		return this.listModel;
 	}
 
@@ -220,11 +230,30 @@ public class JukeBoxGUI extends JFrame {
 			optionPane.setMessage("Start from earlier save?");
 			int n = optionPane.showConfirmDialog(null, "Start from earlier save?", "Save State", JOptionPane.YES_NO_OPTION);
 
+			list = new JList(listModel);			
+			
+			DefaultListModel temp = null;
+			Queue<Song> temp_queue = null;
+			boolean changed = false;
+			
 			if(n == optionPane.YES_OPTION){
 				try {
-					FileInputStream fis = new FileInputStream("myfile");
+					FileInputStream fis = new FileInputStream("jukebox_savedata");
 					ObjectInputStream input = new ObjectInputStream(fis);
 					jukeBox = (JukeBox) input.readObject();
+					input.close();
+					fis.close();
+					
+					fis = new FileInputStream("listmodel_savedata");
+					input = new ObjectInputStream(fis);
+					temp = (DefaultListModel) input.readObject();
+					input.close();
+					fis.close();
+					changed = true;
+
+					fis = new FileInputStream("queue_savedata");
+					input = new ObjectInputStream(fis);
+					temp_queue = (Queue<Song>) input.readObject();
 					input.close();
 					fis.close();
 				} catch (Exception i) {
@@ -235,7 +264,17 @@ public class JukeBoxGUI extends JFrame {
 				jukeBox = JukeBox.getInstance();
 			}
 
-			list = new JList(listModel);
+			jukeBox.initializeJukeBox();
+			if(changed) {
+				for(int x = 0; x < temp.size(); x++) {
+					listModel.addElement(temp.getElementAt(x));
+					jukeBox.addSong(temp_queue.peek());
+					temp_queue.remove();
+				}
+				//System.out.println(temp_queue.toString());
+			}
+			
+			//System.out.println(JukeBox.getInstance().getQueue().toString());
 
 			scrollPaneList = new JScrollPane(list);
 			
@@ -255,12 +294,22 @@ public class JukeBoxGUI extends JFrame {
 
 			if (n == jop.YES_OPTION) {
 				try {
-					FileOutputStream fos = new FileOutputStream("myfile");
+					FileOutputStream fos = new FileOutputStream("jukebox_savedata");
 					ObjectOutputStream outFile = new ObjectOutputStream(fos);
 					outFile.writeObject(jukeBox); //error line
 					outFile.close();
+					
+					fos = new FileOutputStream("listmodel_savedata");
+					outFile = new ObjectOutputStream(fos);
+					outFile.writeObject(listModel); //error line
+					outFile.close();
+					
+					fos = new FileOutputStream("queue_savedata");
+					outFile = new ObjectOutputStream(fos);
+					outFile.writeObject(queue); //error line
+					outFile.close();
 				} catch (IOException e1) {
-					System.out.println("Save failed");
+					//System.out.println("Save failed");
 					e1.printStackTrace();
 				}
 				System.exit(0);
@@ -322,8 +371,8 @@ public class JukeBoxGUI extends JFrame {
 
 				if(jukeBox.validate(inputUserStr, inputPasswordStr, inputSong)){
 					jukeBox.playSong(inputSong);
-					System.out.println("size " + jukeBox.getQueue().size());
-					System.out.println(inputSong.getTitle());
+					//System.out.println("size " + jukeBox.getQueue().size());
+					//System.out.println(inputSong.getTitle());
 					accountStatus.setText(currentUser.labelString());
 					//playlistLabel.setText(jukeBox.toString());
 					listModel.addElement(inputSong.getTime() + " " + inputSong.getTitle() + " by " + inputSong.getArtist());

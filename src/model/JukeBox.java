@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/14/16
  *	
- *	Last Edited: 10/20 19:25
+ *	Last Edited: 10/20 20:49
  *
  *	JukeBox.java-------------------------------
  *	|
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
 import controller.JukeBoxGUI;
@@ -35,12 +36,15 @@ public class JukeBox implements Serializable{
 	private User thisUser;
 	private Song thisSong;
 	private Queue<Song> songQueue;
-	private boolean currentPlaying;
+	private boolean currentPlaying = false;
 	private JukeBoxGUI gui;
 	private static JukeBox instance = new JukeBox();
 	private String playList;
 	private SongQueue newSongQueue;
 	private JList list;
+	private DefaultListModel listModel;
+	private boolean changed;
+	private boolean newItr;
 
 	// Creates the new JukeBox
 	private JukeBox() {
@@ -52,36 +56,54 @@ public class JukeBox implements Serializable{
 	}
 	
 	// Initializes a new songQueue and creates the song list and user list
-	private void initializeJukeBox() {
+	public void initializeJukeBox() {
 		
 		songQueue = new LinkedList<Song>();
 		newSongQueue = new SongQueue(songQueue);
-		
+		changed = false;
+		newItr = false;
 		//System.out.println(songQueue.toString());
 		setSongList();
 		setUserList();
 		currentPlaying = false;
 	}
+	
+	public void setItr() {
+		newItr = true;
+	}
 
 	// Plays the song passed through the parameter and increments status of thisUser and thisSong
 	public void playSong(Song song) {
 		songQueue.add(song);
+		System.out.println(songQueue.toString());
+		JukeBoxGUI.getInstance().getQueue().add(song);
 		//System.out.println(song.getTitle() + " added to queue");
 		//System.out.println(toString());
 		thisUser.incStatus();
 		thisSong.incStatus();
 		thisUser.negateTime(song);
+		if(!currentPlaying)
+			playQueue();
+	}
+	
+	public void addSong(Song song) {
+		songQueue.add(song);
+		System.out.println(song.getTitle() + " added to queue");
 		playQueue();
 	}
 
 	// Plays the start of the song queue
-	private void playQueue() {
+	public void playQueue() {
 		EndOfSongListener waitForSongEnd = new WaitingForSongToEnd();
 		if(!currentPlaying) {
 			SongPlayer.playFile(waitForSongEnd, songQueue.peek().getFileName());
-			
 			currentPlaying = true;
 		}
+	}
+	
+	public void setQueue(Queue<Song> q) {
+		songQueue = q;
+		//System.out.println(songQueue.toString());
 	}
 	
 	public Queue<Song> getQueue(){
@@ -194,7 +216,7 @@ public class JukeBox implements Serializable{
 			//System.out.println("Finished " + eosEvent.fileName() + ", " + eosEvent.finishedDate() + ", "
 			//		+ eosEvent.finishedTime());
 			//System.out.println(JukeBox.getInstance().toString());
-		
+			System.out.println(songQueue.toString());
 			JukeBox object = JukeBox.getInstance();
 			JukeBoxGUI gui = JukeBoxGUI.getInstance();
 			
@@ -210,7 +232,6 @@ public class JukeBox implements Serializable{
 				e.printStackTrace();
 			}
 			songQueue.remove();
-			
 
 			
 			
