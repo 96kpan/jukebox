@@ -320,9 +320,13 @@ public class JukeBoxGUI extends JFrame {
 				}
 				System.exit(0);
 			}
-			if (n == jop.NO_OPTION)
+			else if (n == jop.NO_OPTION)
 				System.exit(0);
+			else{
+				setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+			}
 
+			
 		}
 
 		@Override
