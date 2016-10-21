@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/21/16
  *	
- *	Last Edited: 10/20 20:49
+ *	Last Edited: 10/20 21:56
  *
  *	JukeBoxGUI.java-------------------------------
  *	|
@@ -30,7 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -45,7 +44,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -76,8 +74,8 @@ public class JukeBoxGUI extends JFrame {
 	private static JukeBoxGUI instance;
 	private TableModel model;
 	private JTable table;
-	private DefaultListModel listModel;
-	private JList list;
+	private DefaultListModel<String> listModel;
+	private JList<String> list;
 	private JScrollPane scrollPaneList;
 	private Queue<Song> queue;
 
@@ -157,7 +155,7 @@ public class JukeBoxGUI extends JFrame {
 		
 		listModel = new DefaultListModel<String>();
 		
-		this.list = new JList(listModel);
+		this.list = new JList<String>(listModel);
 		
 		scrollPaneList = new JScrollPane(this.list);
 		playlistQueue.add(queueLabel);
@@ -217,32 +215,30 @@ public class JukeBoxGUI extends JFrame {
 		return jukeBox;
 	}
 
-	public DefaultListModel getListModel(){
+	public DefaultListModel<String> getListModel(){
 		return this.listModel;
 	}
 
 	private class Save implements WindowListener{
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
 			JOptionPane optionPane = new JOptionPane();
 			optionPane.setMessage("Start from earlier save?");
-			int n = optionPane.showConfirmDialog(null, "Start from earlier save?", "Save State", JOptionPane.YES_NO_OPTION);
+			int n = JOptionPane.showConfirmDialog(null, "Start from earlier save?", "Save State", JOptionPane.YES_NO_OPTION);
 
-			list = new JList(listModel);			
+			list = new JList<String>(listModel);			
 			
-			DefaultListModel temp = null;
+			DefaultListModel<?> temp = null;
 			Queue<Song> temp_queue = null;
 			boolean changed = false;
-			ArrayList<User> temp_user = new ArrayList<User>();
 			jukeBox.initializeJukeBox();
-			if(n == optionPane.YES_OPTION){
+			if(n == JOptionPane.YES_OPTION){
 				try {
 					FileInputStream fis = new FileInputStream("jukebox_savedata");
 					ObjectInputStream input = new ObjectInputStream(fis);
 					jukeBox = (JukeBox) input.readObject();
-					temp_user = jukeBox.getUserList();
 					//System.out.println(jukeBox.getUserList().toString());
 					input.close();
 					fis.close();
@@ -272,9 +268,9 @@ public class JukeBoxGUI extends JFrame {
 
 			if(changed) {
 				for(int x = 0; x < temp.size(); x++) {
-					listModel.addElement(temp.getElementAt(x));
+					listModel.addElement((String) temp.getElementAt(x));
 					jukeBox.addSong(temp_queue.peek());
-					System.out.println(temp_queue.peek().getTitle() + " added to queue 1");
+					//System.out.println(temp_queue.peek().getTitle() + " added to queue 1");
 					temp_queue.remove();
 				}
 				//System.out.println(temp_queue.toString());
@@ -296,9 +292,9 @@ public class JukeBoxGUI extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			JOptionPane jop = new JOptionPane();
 			jop.setMessage("Save?");
-			int n = jop.showConfirmDialog(null, "Save?", "Save State", JOptionPane.YES_NO_CANCEL_OPTION);
+			int n = JOptionPane.showConfirmDialog(null, "Save?", "Save State", JOptionPane.YES_NO_CANCEL_OPTION);
 
-			if (n == jop.YES_OPTION) {
+			if (n == JOptionPane.YES_OPTION) {
 				try {
 					FileOutputStream fos = new FileOutputStream("jukebox_savedata");
 					ObjectOutputStream outFile = new ObjectOutputStream(fos);
@@ -320,7 +316,7 @@ public class JukeBoxGUI extends JFrame {
 				}
 				System.exit(0);
 			}
-			else if (n == jop.NO_OPTION)
+			else if (n == JOptionPane.NO_OPTION)
 				System.exit(0);
 			else{
 				setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -331,32 +327,22 @@ public class JukeBoxGUI extends JFrame {
 
 		@Override
 		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 	}

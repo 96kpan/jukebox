@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/21/16
  *	
- *	Last Edited: 10/18 @ 16:46
+ *	Last Edited: 10/20 21:56
  *
  *	Song.java-------------------------------
  *	|
@@ -22,6 +22,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Song implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String title;
 	private String fileName;
 	private String artist;

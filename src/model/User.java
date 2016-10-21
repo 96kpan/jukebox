@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/21/16
  *	
- *	Last Edited: 10/12 @ 10:30AM
+ *	Last Edited: 10/20 21:56
  *
  *	User.java-------------------------------
  *	|
@@ -21,6 +21,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String acc_name;
 	private String password;
 	private int play_status;

@@ -4,7 +4,7 @@
  *	Section Leaders: Bree Collins & Cody Macdonald
  *	Due: 10/21/16
  *	
- *	Last Edited: 10/12 @ 11:05
+ *	Last Edited: 10/20 21:56
  *
  *	JukeBoxTest.java-------------------------------
  *	|
@@ -23,8 +23,6 @@ import model.User;
 
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
-
 import org.junit.Test;
 
 public class JukeBoxTest {
@@ -32,7 +30,6 @@ public class JukeBoxTest {
 	public void test() {
 		JukeBox jukeBox = JukeBox.getInstance();
 		User user = new User("Chris", "1");
-		Song song = new Song("Unknown", "Space Music", "./songfiles/spacemusic.au", 6);
 		assertTrue(jukeBox.validate(user.getName(), user.getPassword()));
 		assertFalse(jukeBox.validate(user.getName(), "22"));
 		Song inputSong = jukeBox.getSong(4);
