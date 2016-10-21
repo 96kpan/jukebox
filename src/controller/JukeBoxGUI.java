@@ -235,12 +235,15 @@ public class JukeBoxGUI extends JFrame {
 			DefaultListModel temp = null;
 			Queue<Song> temp_queue = null;
 			boolean changed = false;
+			ArrayList<User> temp_user = new ArrayList<User>();
 			
 			if(n == optionPane.YES_OPTION){
 				try {
 					FileInputStream fis = new FileInputStream("jukebox_savedata");
 					ObjectInputStream input = new ObjectInputStream(fis);
 					jukeBox = (JukeBox) input.readObject();
+					temp_user = jukeBox.getUserList();
+					System.out.println(jukeBox.getUserList().toString());
 					input.close();
 					fis.close();
 					
@@ -263,8 +266,9 @@ public class JukeBoxGUI extends JFrame {
 			else{
 				jukeBox = JukeBox.getInstance();
 			}
+			
+			jukeBox.currentChange();
 
-			jukeBox.initializeJukeBox();
 			if(changed) {
 				for(int x = 0; x < temp.size(); x++) {
 					listModel.addElement(temp.getElementAt(x));

@@ -71,6 +71,10 @@ public class JukeBox implements Serializable{
 	public void setItr() {
 		newItr = true;
 	}
+	
+	public void currentChange() {
+		currentPlaying = false;
+	}
 
 	// Plays the song passed through the parameter and increments status of thisUser and thisSong
 	public void playSong(Song song) {
@@ -162,6 +166,17 @@ public class JukeBox implements Serializable{
 	
 	public ArrayList<Song> getSongList(){
 		return songList;
+	}
+	
+	public ArrayList<User> getUserList() {
+		return userList;
+	}
+	
+	public void setUserList(ArrayList<User> u) {
+		userList = new ArrayList<User>();
+		for(User use : u) {
+			userList.add(use);
+		}
 	}
  
 	// Sets the userList array to contain all possible users
